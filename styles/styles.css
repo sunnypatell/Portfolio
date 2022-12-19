@@ -186,7 +186,7 @@ section {
   filter: grayscale(0%);
 }
 .header-content .left-header .image img:hover {
-  filter: grayscale(100%);
+  filter: blur(30%);
 }
 .header-content .right-header {
   display: flex;
