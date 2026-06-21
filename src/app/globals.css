@@ -70,6 +70,13 @@ body {
   border-radius: 3px;
 }
 
+/* command-palette search field is auto-focused inside a clipped rounded dialog;
+   the active-row highlight carries focus state, so drop the (clipped) input ring */
+.cmdk-input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
 /* subtle, on-brand scrollbar */
 ::-webkit-scrollbar {
   width: 10px;

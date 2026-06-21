@@ -2,8 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { profile, research } from "@/content/site";
+import { profile, projects, research } from "@/content/site";
 
 type Cmd = {
   id: string;
@@ -44,18 +45,32 @@ export function CommandPalette() {
     [close]
   );
 
-  const commands = useMemo<Cmd[]>(
-    () => [
+  // built from site content so the index stays in sync as projects/research evolve
+  const commands = useMemo<Cmd[]>(() => {
+    const nav: Cmd[] = [
       { id: "home", group: "Go to", label: "Home", run: () => go("/") },
-      { id: "work", group: "Go to", label: "Work", run: () => go("/work") },
-      { id: "projects", group: "Go to", label: "Projects", run: () => go("/projects") },
-      { id: "about", group: "Go to", label: "About", run: () => go("/about") },
-      { id: "research", group: "Go to", label: "Research paper", keywords: "doi semantic cache llm", run: () => go("/research") },
+      { id: "work", group: "Go to", label: "Work", keywords: "experience timeline", run: () => go("/work") },
+      { id: "projects", group: "Go to", label: "Projects", keywords: "builds shipped", run: () => go("/projects") },
+      { id: "about", group: "Go to", label: "About", keywords: "bio story background", run: () => go("/about") },
+      { id: "research", group: "Go to", label: "Research", keywords: "paper publication writing", run: () => go("/research") },
       { id: "resume", group: "Go to", label: "Résumé", keywords: "resume cv", run: () => go("/resume") },
-      { id: "contact", group: "Go to", label: "Contact", run: () => go("/contact") },
+      { id: "contact", group: "Go to", label: "Contact", keywords: "email hire reach out", run: () => go("/contact") },
+    ];
+    const projectCmds: Cmd[] = projects.map((p) => ({
+      id: `project-${p.slug}`,
+      group: "Projects",
+      label: p.name,
+      keywords: `${p.oneLiner} ${p.stack.join(" ")}`,
+      run: () => go(`/projects/${p.slug}`),
+    }));
+    const researchCmds: Cmd[] = [
+      { id: "paper", group: "Research", label: research.title, keywords: "paper publication doi citation", run: () => go("/research") },
+    ];
+    const links: Cmd[] = [
       { id: "github", group: "Links", label: "GitHub", keywords: "code source repos", run: () => ext(profile.socials.github) },
       { id: "linkedin", group: "Links", label: "LinkedIn", run: () => ext(profile.socials.linkedin) },
-      { id: "doi", group: "Links", label: "Research DOI on Zenodo", keywords: "paper citation", run: () => ext(research.doi) },
+    ];
+    const actions: Cmd[] = [
       {
         id: "copy-email",
         group: "Actions",
@@ -69,9 +84,9 @@ export function CommandPalette() {
         },
       },
       { id: "download-resume", group: "Actions", label: "Download résumé (PDF)", keywords: "cv", run: () => ext(profile.resumeFile) },
-    ],
-    [go, ext, close]
-  );
+    ];
+    return [...nav, ...projectCmds, ...researchCmds, ...links, ...actions];
+  }, [go, ext, close]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -144,6 +159,7 @@ export function CommandPalette() {
   return (
     <div
       role="presentation"
+      data-lenis-prevent
       className="fixed inset-0 z-[60] flex items-start justify-center p-4 pt-[16vh]"
     >
       <button
@@ -160,9 +176,7 @@ export function CommandPalette() {
         className="w-full max-w-lg overflow-hidden rounded-xl border border-line bg-surface shadow-float"
       >
         <div className="flex items-center gap-2.5 border-b border-line px-4">
-          <span aria-hidden className="font-mono text-sm text-ember">
-            &gt;
-          </span>
+          <Search aria-hidden className="h-4 w-4 shrink-0 text-muted" />
           <input
             ref={inputRef}
             value={query}
@@ -174,7 +188,7 @@ export function CommandPalette() {
             aria-autocomplete="list"
             aria-activedescendant={filtered[active] ? `cmdk-${filtered[active].id}` : undefined}
             placeholder="Jump to a page, link, or action..."
-            className="w-full bg-transparent py-3.5 font-mono text-sm text-bone outline-none placeholder:text-muted"
+            className="cmdk-input w-full bg-transparent py-3.5 font-mono text-sm text-bone outline-none placeholder:text-muted"
           />
         </div>
 
