@@ -28,8 +28,8 @@ export const profile = {
 export const about = {
   lead: "I build software at every layer it lives on, from the screen people touch to the systems running quietly underneath.",
   paragraphs: [
-    "I'm a software developer, and what I care about is shipping things people actually use, then standing behind them long enough to make them better. In four years I've built **full products end to end** and kept them running: a resume screener **2,000+ people** use, a Spotify downloader I still cut releases for, an open-source network toolkit other developers can pick up. Right now I'm doing full-stack engineering on watsonx Workshop at IBM.",
-    "What sets that work apart is everything underneath it. I've also run the infrastructure most apps just assume is there, the directories, networks, and automation a company leans on, including a 3,000+ object migration through an acquisition with **zero downtime**. Once you've been on the hook for that, you stop treating deployment, failure, and scale as someone else's problem and design for them from the first line of code. The details I care about most are the ones that make software **hold up under real load**, the ones nobody notices until they break.",
+    "I'm the developer you hand **the problem you're afraid to break**. Most of what I build is the thing other people lean on, so I learned early to ask the unglamorous question first: what happens when this is under real load, at 3am, with nobody watching. Four years in, I've shipped polished products people actually use and then stayed with them long after launch. I still cut releases for a Spotify downloader I wrote years ago, keep an open-source resume screener running for the people who open it every day, and keep a network toolkit alive for the developers who reach for it. **I don't ship and walk away**, because someone is counting on it to still be there next week.",
+    "That instinct came from carrying the parts most product developers never touch: the directories, networks, and automation a company quietly assumes will always work. I once moved a 3,000-object directory through a corporate acquisition where the only acceptable outcome was nobody losing access and nobody noticing it happened. Once you have been on the hook like that, deployment and failure and scale stop being someone else's job further down the line and become how you design from the first line. So when I tell you something will hold, **it isn't optimism**. It's having owned **the layer underneath**, and building everything above it knowing what breaks down there first.",
   ],
   now: [
     "Building full-stack AI features on watsonx Workshop at IBM",
@@ -162,11 +162,11 @@ A deterministic rule engine then scores against all six platform profiles, weigh
 
 Auth and storage adapt to where it runs: Firebase and Firestore for the hosted build, anonymous localStorage for self-hosters, or on-prem LDAP and Active Directory. A live, Firestore-backed counter on the landing page has tracked **more than 2,000 people** through it so far, and the full behavior is written up in its own [documentation site](https://ats-screener.vercel.app/docs).`,
     highlights: [
-      "Each platform profile carries its own [dimension weights and passing threshold](https://ats-screener.vercel.app/docs/scoring/methodology/) pulled from real vendor behavior, and the keyword matcher switches per platform so Taleo scores literally while Greenhouse and Lever score on meaning",
-      "Parsing runs off the main thread in a Web Worker (`pdfjs-dist`, `mammoth`), so a long resume never freezes the tab and the file itself never leaves the device, only its extracted text does",
-      "The AI layer is a hardened cross-provider chain, Gemma 3 27B to Llama 3.3 70B to the rule engine, fronted by a content-addressed prompt cache and per-IP rate limiting, so a re-scan is instant and a provider outage never takes it down",
-      "Extraction is a hand-built NLP stack (tokenizer, TF-IDF, synonym expansion, multi-industry skills taxonomy) rather than a paid parsing API",
-      "One codebase, three deployments at $0 infra: hosted on Firebase, fully anonymous on localStorage, or on-prem against [LDAP and Active Directory](https://ats-screener.vercel.app/docs/self-hosting/active-directory/)",
+      "Six platform profiles with [their own weights and thresholds](https://ats-screener.vercel.app/docs/scoring/methodology/); literal matching for Taleo, semantic for Greenhouse and Lever",
+      "Web Worker parsing (`pdfjs-dist`, `mammoth`) keeps the file on-device, only the extracted text is sent",
+      "Cross-provider AI chain (Gemma 3 27B, Llama 3.3 70B, rule-engine fallback) behind a prompt cache and per-IP rate limiting",
+      "Hand-built NLP instead of a paid parser: tokenizer, TF-IDF, synonyms, multi-industry skills taxonomy",
+      "One codebase, three zero-cost deploys: Firebase, anonymous localStorage, or on-prem [Active Directory](https://ats-screener.vercel.app/docs/self-hosting/active-directory/)",
     ],
     stack: ["SvelteKit", "TypeScript", "pdfjs-dist", "mammoth", "Custom NLP", "Gemma 3 27B", "Llama 3.3 70B", "Firebase", "Firestore", "Astro Starlight"],
     links: {
@@ -199,11 +199,11 @@ The hard part is the seams. NextAuth handles Google, GitHub, and bcrypt-hashed e
 
 The result is a production-deployed platform that ships as a multi-stage Docker image. Axelot was a collaborative two-person build, and I owned core parts of the system end to end.`,
     highlights: [
-      "Two people can type in the same document at once with zero conflicts: a Yjs CRDT bound to TipTap converges edits on its own, synced browser-to-browser over a WebRTC peer mesh with no central editing server",
-      "The trickiest seam is auth: NextAuth mints a Firebase custom token server-side into each session, so the browser can talk to Firestore under real security rules instead of a wide-open client",
-      "A trending feed weights logarithmic view counts against recency and activity decay (recomputed by a `CRON_SECRET`-guarded Vercel cron), so the front page surfaces momentum rather than raw popularity",
-      "In-editor AI streams completions token by token through an OpenRouter proxy, over an editor that already handles tables, KaTeX math, Mermaid diagrams, and Shiki-highlighted code",
-      "Firestore holds durable snapshots behind the live mesh, and the whole thing ships as a multi-stage Docker image over Next.js standalone output",
+      "Conflict-free concurrent editing: a Yjs CRDT bound to TipTap, synced browser-to-browser over a WebRTC peer mesh",
+      "Server-side Firebase custom tokens minted into the NextAuth session, so the browser hits Firestore under real security rules",
+      "Trending feed weighting logarithmic views against recency and activity decay, recomputed by a `CRON_SECRET`-guarded cron",
+      "In-editor AI streaming token by token through an OpenRouter proxy; tables, KaTeX, Mermaid, and Shiki code",
+      "Durable Firestore snapshots behind the live mesh, shipped as a multi-stage Docker image",
     ],
     stack: ["Next.js", "React", "TypeScript", "TipTap", "Yjs (CRDT)", "WebRTC", "Firebase", "NextAuth", "OpenRouter", "Docker"],
     links: { live: "https://www.axelot.io", repo: "https://github.com/sunnypatell/axelot" },
@@ -228,11 +228,11 @@ Matching is where correctness lives. Each track is scored against YouTube candid
 
 The suite runs 160+ pytest cases on every push across a 15-job matrix (3 OSes x Python 3.9-3.13), and releases ship [SLSA Build Level 3](https://slsa.dev) provenance, [CycloneDX](https://cyclonedx.org) SBOMs, and [Sigstore](https://www.sigstore.dev) signatures.`,
     highlights: [
-      "Gets track data with no login by reading the `__NEXT_DATA__` blob off Spotify's public embed pages, with layered path resolution and recursive fallbacks that survive the structural drift Spotify's A/B tests keep introducing",
-      "Past the embed cap near 100 tracks it switches to Spotify's internal `spclient` API with a short-lived anonymous token to recover canonical order on 1000+ track playlists",
-      "Grabs the right recording, not a remix or live cut, by scoring YouTube candidates on normalized title, artist, and a duration tolerance, widening the query and rotating clients when a search returns nothing",
-      "Engineered for long runs: a 4-worker thread pool, 429-aware exponential backoff, cooperative cancellation, and an append-only JSONL manifest that resumes an interrupted download across sessions",
-      "Release engineering most side projects skip: 160+ pytest cases on a 15-job matrix (3 OSes x Python 3.9 to 3.13) and signed binaries with [SLSA Build Level 3](https://slsa.dev) provenance, [CycloneDX](https://cyclonedx.org) SBOMs, and [Sigstore](https://www.sigstore.dev) verification",
+      "No-login track data from Spotify's `__NEXT_DATA__` embed blob, with recursive fallbacks that ride out A/B drift",
+      "`spclient` API fallback past the ~100-track embed cap, recovering canonical order on 1000+ track playlists",
+      "Right-recording matching on normalized title, artist, and duration tolerance, with query-widening on empty hits",
+      "Built for long runs: 4-worker pool, 429-aware backoff, JSONL resume manifest, cooperative cancellation",
+      "Release rigor most side projects skip: 160+ tests on 15 jobs, plus [SLSA L3](https://slsa.dev) provenance, [CycloneDX](https://cyclonedx.org) SBOMs, and [Sigstore](https://www.sigstore.dev) signing",
     ],
     stack: ["Python", "PyQt5", "yt-dlp", "FFmpeg", "Mutagen", "pytest", "GitHub Actions", "SLSA / Sigstore", "Homebrew"],
     links: {
@@ -272,11 +272,11 @@ The DNS engine speaks DNS-over-HTTPS to five providers, parsing both JSON and dn
 
 Browsers can't send raw ICMP, so the Electron build adds a Node.js backend behind a context-isolated IPC bridge, with hostname and port validation that blocks command injection before any shell call. Firestore rules enforce owner/editor/admin tiers and bar collaborators from changing ownership.`,
     highlights: [
-      "RFC-correct networking core: bitwise IPv4 subnetting with RFC 3021 /31 support, IPv6 longest-run zero compression and solicited-node multicast, CIDR summarization, and a first-fit-descending VLSM allocator",
-      "[DNS-over-HTTPS](https://www.rfc-editor.org/rfc/rfc8484) across 5 providers, parsing both JSON and dns-message wire formats, with a TTL-aware LRU cache and [DNSSEC AD-flag](https://www.rfc-editor.org/rfc/rfc4035) validation",
-      "Native Electron backend behind a context-isolated IPC bridge for real ICMP ping, traceroute, and port scanning, with validation that blocks command injection before any shell call",
-      "Firestore security rules implementing owner/editor/admin sharing tiers that bar collaborators from altering ownership",
-      "Config generation targets Cisco IOS and Aruba CX; conflict detection parses Windows ARP, Linux `ip neigh`, and DHCP leases; WCAG 2.2 AA throughout",
+      "RFC-correct IP math: [RFC 3021](https://www.rfc-editor.org/rfc/rfc3021) /31 subnetting, IPv6 zero-compression, CIDR summarization, first-fit-descending VLSM",
+      "[DNS-over-HTTPS](https://www.rfc-editor.org/rfc/rfc8484) to 5 providers, JSON and wire-format parsing, TTL-aware LRU cache, [DNSSEC](https://www.rfc-editor.org/rfc/rfc4035) AD-flag checks",
+      "Native Electron backend over a context-isolated IPC bridge for real ICMP ping, traceroute, and port scans",
+      "Hostname and port validation that blocks command injection before any shell call",
+      "Firestore owner/editor/admin tiers; Cisco IOS and Aruba CX config generation; WCAG 2.2 AA",
     ],
     stack: ["TypeScript", "Next.js", "React", "Electron", "Node.js", "Firebase", "Tailwind CSS", "DNS-over-HTTPS"],
     links: {
@@ -302,11 +302,11 @@ The engineering is in making the flaws solvable but non-trivial. The login route
 
 Each challenge ships an objective and full writeup, and the whole lab runs from one multi-stage Docker image with a seed-snapshot database that persists progress across restarts. SecureBank was a five-person university project: I authored the privilege-escalation challenge and was the largest contributor to the application and its Docker packaging, while four teammates each built a graded challenge of their own.`,
     highlights: [
-      "A believable full-stack banking app (Next.js, React, SQLite via better-sqlite3) where every vulnerability is deliberately engineered into hand-written, ORM-free query paths",
-      "A filter-then-double-decode login bypass: a regex strips SQL metacharacters, then the input is URL-decoded twice, so a double-encoded payload slips past the filter and injects",
-      "Stacked-query privilege escalation through the feedback form, routing the INSERT through SQLite multi-statement exec while the DELETE path stays parameterized",
-      "Two access-control backdoors: an `x-dev-mode` header that drops per-user filtering, and a maintenance route that runs raw SQL only under a debug flag on a specific weekday",
-      "Five graded challenges, each with an objective and writeup, packaged into a multi-stage Docker image with a seed-snapshot database that persists progress across restarts",
+      "Hand-written, ORM-free SQLite query paths (Next.js, React, better-sqlite3) so every flaw is deliberate",
+      "Filter-then-double-decode login bypass: a regex strips metacharacters, then double URL-decode reintroduces them",
+      "Stacked-query privilege escalation via the feedback INSERT, with the DELETE path left parameterized as a control",
+      "Two access-control backdoors: an `x-dev-mode` header and a weekday-gated debug route running raw SQL",
+      "Five graded challenges with writeups, one-command multi-stage Docker, seed-snapshot DB that persists progress",
     ],
     stack: ["Next.js", "React", "TypeScript", "SQLite", "better-sqlite3", "Docker"],
     links: { repo: "https://github.com/sunnypatell/securebank-ctf" },
@@ -331,11 +331,11 @@ The progression layer is the ambitious part. Player profiles (name, high score, 
 
 After the original single-file build, the game was refactored into eight documented classes under a Maven-style source layout, with generated Javadoc and a UML class diagram.`,
     highlights: [
-      "Built by hand in grade 12, before AI tooling existed: roughly 5,000 lines of raw Java Swing/AWT with no game engine, hand-rolling the loop, collision, rendering, audio, and input",
-      "Drives everything off a fixed-step 10ms Swing Timer game loop so physics stays frame-rate independent, with antialiased Graphics2D rendering",
-      "Disk-persistent player profiles (name, high score, controls, selected knife) that gate a knife shop unlocking blades at score milestones",
-      "Implemented a signature EMP ability that charges through scoring and uses Euclidean proximity to flip nearby enemy knives, with particle and screen-shake feedback",
-      "Refactored the single-file build into eight documented classes with generated Javadoc and a UML diagram",
+      "Grade-12 capstone, ~5,000 lines of raw Java [Swing/AWT](https://docs.oracle.com/javase/tutorial/uiswing/), no engine, written before AI could code",
+      "Fixed-step 10ms Swing Timer loop for frame-rate-independent physics, antialiased Graphics2D on top",
+      "Disk-persistent player profiles gating a knife shop that unlocks blades at score milestones",
+      "Signature EMP ability: a Euclidean proximity check flips nearby enemy knives, with particles and screen shake",
+      "Refactored from one file into eight documented classes with generated Javadoc and a UML diagram",
     ],
     stack: ["Java SE", "Swing / AWT", "Graphics2D", "javax.sound.sampled", "Javadoc"],
     links: { repo: "https://github.com/sunnypatell/KnifeThrow" },
