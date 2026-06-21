@@ -122,14 +122,14 @@ body {
 @keyframes float-bob {
   0%,
   100% {
-    transform: translateY(0) rotate(-1deg);
+    transform: translateY(0) rotate(-2deg);
   }
   50% {
-    transform: translateY(-12px) rotate(1deg);
+    transform: translateY(-10px) rotate(2deg);
   }
 }
 .float-bob {
-  animation: float-bob 5s var(--ease-premium) infinite;
+  animation: float-bob 4s ease-in-out infinite;
 }
 
 /* ── page transition (template re-mounts per route) ─────────────── */

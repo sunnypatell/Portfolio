@@ -83,7 +83,7 @@ export default function ContactPage() {
                 alt=""
                 width={320}
                 height={320}
-                className="float-bob w-36 select-none sm:w-44"
+                className="float-bob w-36 select-none drop-shadow-[0_12px_30px_rgba(0,0,0,0.45)] sm:w-44"
               />
             </div>
           </div>
