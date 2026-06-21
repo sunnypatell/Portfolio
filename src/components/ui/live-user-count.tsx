@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 // public firestore counter shared with the ats screener; firebase web key stays in env, not source.
 const KEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
@@ -9,6 +10,7 @@ const COUNTER_URL = KEY
   : null;
 
 export function LiveUserCount({ fallback = "2,000+" }: { fallback?: string }) {
+  const pathname = usePathname();
   const ref = useRef<HTMLSpanElement>(null);
   const [target, setTarget] = useState<number | null>(null);
   const [failed, setFailed] = useState(false);
@@ -52,16 +54,26 @@ export function LiveUserCount({ fallback = "2,000+" }: { fallback?: string }) {
         if (Number.isFinite(n) && n > 0) {
           targetRef.current = n;
           setTarget(n);
+          setFailed(false);
           maybeAnimate();
         } else setFailed(true);
       })
-      .catch(() => setFailed(true));
+      // a client-side nav unmount aborts the in-flight fetch; that's not a real
+      // failure, so don't poison the counter into the static fallback for it
+      .catch((e) => {
+        if (e?.name !== "AbortError") setFailed(true);
+      });
     return () => ac.abort();
   }, [maybeAnimate]);
 
-  // observe on mount so the count fires whether the element is already in view
-  // (reload) or scrolled into view later (navigating in from another page)
+  // re-arm on every route change so the count-up replays when you navigate back
+  // into view, not just on a hard reload. next reuses the page subtree on client
+  // nav (and across [slug] params), so the refs survive and the guard never resets
+  // on its own. keyed on pathname to mirror a fresh mount, like the ats screener.
   useEffect(() => {
+    animated.current = false;
+    inView.current = false;
+    setDisplay(0);
     const el = ref.current;
     if (!el) return;
     const io = new IntersectionObserver(
@@ -76,7 +88,7 @@ export function LiveUserCount({ fallback = "2,000+" }: { fallback?: string }) {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [maybeAnimate]);
+  }, [pathname, maybeAnimate]);
 
   const shown = failed ? fallback : display.toLocaleString();
   // reserve the final width (tabular figures) so the count-up never reflows the dot + label
