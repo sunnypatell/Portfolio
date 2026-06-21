@@ -13,6 +13,7 @@ export function Nav() {
   const lenis = useLenis();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [mac, setMac] = useState(true);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
 
@@ -22,6 +23,9 @@ export function Nav() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // label the command-menu shortcut for the actual platform
+  useEffect(() => setMac(/mac/i.test(navigator.userAgent)), []);
 
   // close on route change
   useEffect(() => setOpen(false), [pathname]);
@@ -105,6 +109,16 @@ export function Nav() {
         </div>
 
         <div className="flex items-center gap-5">
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event("cmdk:open"))}
+            aria-label="Open command menu"
+            className="hidden items-center gap-1 rounded-md border border-line px-2 py-1.5 font-mono text-[0.68rem] text-muted transition-colors hover:border-ember/40 hover:text-bone md:inline-flex"
+          >
+            <span aria-hidden suppressHydrationWarning>
+              {mac ? "⌘K" : "Ctrl K"}
+            </span>
+          </button>
           <Link
             href={profile.resume}
             className="hidden font-mono text-[0.8rem] text-muted transition-colors hover:text-bone md:inline-block"
