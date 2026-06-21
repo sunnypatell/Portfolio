@@ -7,7 +7,7 @@ import { profile } from "@/content/site";
 export const metadata: Metadata = {
   title: "Résumé",
   description:
-    "Sunny Patel's resume: software developer at IBM, with full-stack, systems, and cloud work plus shipped projects. View it here or download the PDF.",
+    "Sunny Patel's resume: a software developer across full-stack, systems, and cloud, with shipped projects people actually use. View it here or download the PDF.",
   alternates: { canonical: "/resume" },
 };
 
@@ -33,7 +33,7 @@ export default function ResumePage() {
           <div className="flex flex-wrap items-center gap-5 font-mono text-sm">
             <a
               href={profile.resumeFile}
-              download
+              download="Sunny Patel - Software Resume.pdf"
               className={ctaClass}
             >
               <Download className="h-4 w-4" />
