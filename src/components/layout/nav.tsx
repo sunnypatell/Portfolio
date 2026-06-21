@@ -125,14 +125,18 @@ export function Nav() {
           >
             Résumé
           </Link>
-          <Magnetic className="hidden md:inline-block">
-            <Link
-              href="/contact"
-              className="block rounded-md border border-line px-4 py-2 font-mono text-[0.8rem] text-bone transition-colors duration-300 hover:border-ember hover:text-ember"
-            >
-              Get in touch
-            </Link>
-          </Magnetic>
+          {/* wrapper controls responsive visibility: Magnetic hardcodes an inline
+              display, which would override a `hidden` class on Magnetic itself */}
+          <div className="hidden md:block">
+            <Magnetic>
+              <Link
+                href="/contact"
+                className="block rounded-md border border-line px-4 py-2 font-mono text-[0.8rem] text-bone transition-colors duration-300 hover:border-ember hover:text-ember"
+              >
+                Get in touch
+              </Link>
+            </Magnetic>
+          </div>
           <button
             ref={toggleRef}
             type="button"
