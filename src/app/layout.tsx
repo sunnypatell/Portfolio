@@ -12,21 +12,24 @@ import "./globals.css";
 const display = Geist({
   variable: "--font-display-src",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const mono = Geist_Mono({
   variable: "--font-mono-src",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const body = Hanken_Grotesk({
   variable: "--font-body-src",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const siteUrl = "https://www.sunnypatel.net";
 const description =
-  "Sunny Patel is a software developer who works the whole stack, from real-time web apps to the infrastructure underneath. Currently at IBM (watsonx); Honours CS at Ontario Tech.";
+  "Sunny Patel is a software developer who works the whole stack, from real-time web apps to the systems and infrastructure underneath. Honours CS at Ontario Tech.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -83,7 +86,6 @@ const structuredData = {
       jobTitle: "Software Developer",
       email: profile.email,
       description,
-      worksFor: { "@type": "Organization", name: "IBM" },
       alumniOf: {
         "@type": "CollegeOrUniversity",
         name: "Ontario Tech University",
