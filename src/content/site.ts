@@ -23,13 +23,13 @@ export const profile = {
   },
   headline: ["I build the whole stack,", "from the screen to the silicon."],
   intro:
-    "I build full-stack software **people actually use**, and I understand it **the whole way down**, to the systems most apps just sit on top of. Right now that's full-stack AI work, as a developer at IBM.",
+    "I build full-stack software **people actually use**, and I understand it **the whole way down**, to the systems most apps just sit on top of. Give me the hardest problem in your stack, the one that has to hold, and I'll **own it end to end**.",
 } as const;
 
 export const about = {
   lead: "I build software at every layer it lives on, from the screen people touch to the systems running quietly underneath.",
   paragraphs: [
-    "I'm the developer you hand **the problem you're afraid to break**. Most of what I build is the thing other people lean on, so I learned early to ask the unglamorous question first: what happens when this is under real load, at 3am, with nobody watching. Four years in, I've shipped polished products people actually use and then stayed with them long after launch. I still cut releases for a Spotify downloader I wrote years ago, keep an open-source resume screener running for the people who open it every day, and keep a network toolkit alive for the developers who reach for it. **I don't ship and walk away**, because someone is counting on it to still be there next week.",
+    "I'm the developer you hand **the problem you're afraid to break**. Most of what I build is the thing other people lean on, so I learned early to ask the unglamorous question first: what happens when this is under real load, at 3am, with nobody watching. Four years in, I've shipped polished products people actually use and stayed with them long after launch, still cutting updates for tools I built years ago, long after anyone asked me to, because people quietly came to depend on them. **I don't ship and walk away**, because someone is counting on it to still be there next week.",
     "That instinct came from carrying the parts most product developers never touch: the directories, networks, and automation a company quietly assumes will always work. I helped carry a company's entire user directory through a corporate acquisition, where the only acceptable outcome was nobody losing access and nobody noticing it happened. Once you have been on the hook like that, deployment and failure and scale stop being someone else's job further down the line and become how you design from the first line. So when I tell you something will hold, **it isn't optimism**. It's having owned **the layer underneath**, and building everything above it knowing what breaks down there first.",
   ],
   now: [
