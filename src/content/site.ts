@@ -413,6 +413,18 @@ export type Certification = {
 
 export const certifications: Certification[] = [
   {
+    name: "IBM RAG and Agentic AI",
+    issuer: "IBM",
+    date: "2026",
+    url: "https://coursera.org/verify/professional-cert/S9ENFFEVMD37",
+  },
+  {
+    name: "Microsoft Full-Stack Developer",
+    issuer: "Microsoft",
+    date: "2026",
+    url: "https://coursera.org/verify/professional-cert/MSK7DL3J65TJ",
+  },
+  {
     name: "GH-300: GitHub Copilot",
     issuer: "Microsoft",
     date: "2025",
