@@ -98,7 +98,7 @@ const structuredData = {
         addressRegion: "Ontario",
         addressCountry: "CA",
       },
-      image: `${siteUrl}/assets/portrait.webp`,
+      image: `${siteUrl}/assets/portrait.jpg`,
       sameAs: [profile.socials.github, profile.socials.linkedin],
     },
     {

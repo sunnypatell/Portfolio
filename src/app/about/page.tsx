@@ -27,11 +27,12 @@ export default function AboutPage() {
               />
               <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--radius)] border border-ember/40">
                 <Image
-                  src="/assets/portrait.webp"
+                  src="/assets/portrait.jpg"
                   alt="Sunny Patel"
                   fill
                   priority
-                  sizes="320px"
+                  quality={90}
+                  sizes="420px" // square source covers a taller 4:5 box, so request near full-res, not the 320px slot width
                   className="object-cover object-center"
                 />
               </div>

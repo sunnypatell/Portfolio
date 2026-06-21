@@ -19,6 +19,7 @@ const nextConfig: NextConfig = {
   transpilePackages: ["three"], // three ships untranspiled esm that drei pulls in
   images: {
     formats: ["image/avif", "image/webp"],
+    qualities: [75, 90], // 90 for the about portrait; next 16 gates non-default quality behind this allowlist
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
