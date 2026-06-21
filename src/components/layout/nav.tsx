@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { Search } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useLenis } from "lenis/react";
 import { cn } from "@/lib/utils";
@@ -112,12 +113,17 @@ export function Nav() {
           <button
             type="button"
             onClick={() => window.dispatchEvent(new Event("cmdk:open"))}
-            aria-label="Open command menu"
-            className="hidden items-center gap-1 rounded-md border border-line px-2 py-1.5 font-mono text-[0.68rem] text-muted transition-colors hover:border-ember/40 hover:text-bone md:inline-flex"
+            aria-label="Search"
+            className="group hidden h-9 items-center gap-2 rounded-md border border-line bg-surface/40 pl-2.5 pr-2 font-mono text-[0.76rem] text-muted transition-colors hover:border-ember/40 hover:text-bone md:inline-flex lg:w-56"
           >
-            <span aria-hidden suppressHydrationWarning>
+            <Search className="h-3.5 w-3.5 shrink-0 transition-colors group-hover:text-ember" />
+            <span className="hidden lg:inline">Search</span>
+            <kbd
+              suppressHydrationWarning
+              className="ml-auto rounded border border-line bg-ink/50 px-1.5 py-0.5 text-[0.65rem] leading-none text-muted"
+            >
               {mac ? "⌘K" : "Ctrl K"}
-            </span>
+            </kbd>
           </button>
           <Link
             href={profile.resume}
