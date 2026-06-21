@@ -143,7 +143,7 @@ export default function ResearchPage() {
                 </span>
                 <CopyButton text={research.citation} label="Copy" />
               </div>
-              <p className="mt-2.5 select-all font-mono text-[0.8rem] leading-relaxed text-bone-dim">
+              <p className="mt-2.5 select-all break-words font-mono text-[0.8rem] leading-relaxed text-bone-dim">
                 {research.citation}
               </p>
             </div>
