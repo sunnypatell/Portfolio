@@ -45,7 +45,7 @@ export function LazyDevice({ poster }: { poster: string }) {
   }, [mode]);
 
   return (
-    <div ref={ref} className="absolute inset-0 bg-ink">
+    <div ref={ref} className="absolute inset-0">
       {mode === "static" && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
