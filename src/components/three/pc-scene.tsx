@@ -37,7 +37,7 @@ function Model() {
     const g = ref.current;
     if (!g) return;
     const t = state.clock.elapsedTime;
-    g.rotation.y = -0.42 + Math.sin(t * 0.3) * 0.1;
+    g.rotation.y = 4.4 + Math.sin(t * 0.3) * 0.1;
     g.rotation.x = -0.03 + Math.sin(t * 0.24) * 0.025;
   });
   return (
