@@ -1,0 +1,10 @@
+/* TEAM */
+  Engineer: Sunny Patel
+  Site: sunnypatel.net
+  GitHub: @sunnypatell
+  Location: Greater Toronto Area, Canada
+
+/* SITE */
+  Built by hand, no template.
+  Stack: Next.js, React, TypeScript, Tailwind CSS, React Three Fiber, GSAP, Lenis
+  Standards: responsive, keyboard-accessible, reduced-motion aware
