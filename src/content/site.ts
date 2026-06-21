@@ -19,6 +19,7 @@ export const profile = {
     label: "Software Developer Intern",
     org: "IBM",
     note: "watsonx Workshop",
+    available: "Open to software roles",
   },
   headline: ["I build the whole stack,", "from the screen to the silicon."],
   intro:
@@ -33,7 +34,7 @@ export const about = {
   ],
   now: [
     "Building full-stack AI features on watsonx Workshop at IBM",
-    "Going deeper on distributed systems and Go",
+    "Going deeper on low-level systems programming, closer to the hardware",
     "Finishing Honours CS at Ontario Tech (President's List, Dean's Honours)",
   ],
   facts: [
@@ -55,7 +56,7 @@ export const capabilities = [
   },
   {
     title: "Cloud & delivery",
-    body: "Docker, CI/CD, and the automation that moves work from my machine to production safely and repeatably.",
+    body: "Docker and Kubernetes, CI/CD, and the automation that moves work from my machine to production safely and repeatably.",
   },
 ] as const;
 
@@ -93,7 +94,7 @@ export const experiences: Experience[] = [
     start: "Jun 2023",
     end: "Jan 2026",
     summary:
-      "Kept a large theme-park's devices, networks, and accounts running, and automated the tedious parts.",
+      "Kept the devices, networks, and accounts running at Canada's largest theme park, and automated the tedious parts.",
     bullets: [
       "Helped migrate 3,000+ directory objects during the Six Flags acquisition (hybrid Azure AD and on-prem), with no service interruption for users.",
       "Wrote 10+ automation scripts that set up new computers and user accounts by themselves.",
@@ -108,7 +109,7 @@ export const experiences: Experience[] = [
     mode: "On-site",
     start: "Jan 2023",
     end: "Aug 2023",
-    summary: "Rolled out and supported the devices clinical staff use at the bedside.",
+    summary: "Rolled out and supported the bedside tablets patients use across the hospital.",
     bullets: [
       "Moved 400+ tablets to secure, centrally-managed iPads across hospital units.",
       "Built an internal admin tool for managing app access and user roles.",
