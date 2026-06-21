@@ -8,12 +8,12 @@ import {
   Vignette,
   BrightnessContrast,
 } from "@react-three/postprocessing";
-import { Suspense, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import type { Group, Mesh } from "three";
 
 const URL = "/models/retro_computer.glb?v=5"; // swap this one path to use a different rig
 
-function Model() {
+function Model({ scale }: { scale: number }) {
   const ref = useRef<Group>(null);
   const { scene } = useGLTF(URL);
 
@@ -43,7 +43,7 @@ function Model() {
   return (
     <Center>
       <group ref={ref}>
-        <primitive object={scene} scale={1.3} />
+        <primitive object={scene} scale={scale} />
       </group>
     </Center>
   );
@@ -52,12 +52,26 @@ useGLTF.preload(URL);
 
 // transparent canvas; warm key + cool rim grade it into the theme, bloom lifts the crt glow
 export default function PcScene({ active = true }: { active?: boolean }) {
+  // touch devices get the idle sway only, so a swipe scrolls the page instead of
+  // grabbing the model; mouse-drag orbit stays on pointer-fine desktops. slightly
+  // bigger model on phones now that the mobile hero has the room.
+  const [isTouch, setIsTouch] = useState(false);
+  const [scale, setScale] = useState(1.3);
+  useEffect(() => {
+    setIsTouch(window.matchMedia("(any-pointer: coarse)").matches);
+    setScale(window.matchMedia("(max-width: 1024px)").matches ? 1.5 : 1.3);
+  }, []);
+
   return (
     <Canvas
       frameloop={active ? "always" : "never"}
       dpr={[1, 1.6]}
       gl={{ antialias: true, powerPreference: "high-performance", alpha: true }}
       camera={{ position: [0, 0.5, 10], fov: 28 }}
+      onCreated={({ gl }) => {
+        // let a vertical swipe scroll the page instead of being eaten by the canvas
+        gl.domElement.style.touchAction = "pan-y";
+      }}
     >
       <ambientLight intensity={0.55} />
       <spotLight position={[-6, 7, 7]} angle={0.5} penumbra={1} intensity={130} color="#ffe9d2" />
@@ -65,16 +79,18 @@ export default function PcScene({ active = true }: { active?: boolean }) {
       <pointLight position={[0, 1, 7]} intensity={22} color="#ffb27a" />
 
       <Suspense fallback={null}>
-        <Model />
+        <Model scale={scale} />
       </Suspense>
 
-      <OrbitControls
-        makeDefault
-        enableZoom={false}
-        enablePan={false}
-        minPolarAngle={Math.PI / 2.4}
-        maxPolarAngle={Math.PI / 2.05}
-      />
+      {!isTouch && (
+        <OrbitControls
+          makeDefault
+          enableZoom={false}
+          enablePan={false}
+          minPolarAngle={Math.PI / 2.4}
+          maxPolarAngle={Math.PI / 2.05}
+        />
+      )}
 
       <EffectComposer multisampling={0} enableNormalPass={false}>
         <BrightnessContrast brightness={-0.01} contrast={0.06} />
