@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="8" fill="#0b0d0f" />
+  <text x="16" y="20.5" text-anchor="middle" font-family="ui-sans-serif, Geist, system-ui, sans-serif" font-size="15" font-weight="600" letter-spacing="-0.5" fill="#ede8dc">SP</text>
+  <rect x="10.5" y="24" width="11" height="1.6" rx="0.8" fill="#d9663d" />
+</svg>
