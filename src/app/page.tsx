@@ -6,10 +6,13 @@ import { Reveal } from "@/components/ui/reveal";
 import { ProjectWindow } from "@/components/ui/project-window";
 import { ActivePill } from "@/components/ui/project-signals";
 import { Magnetic } from "@/components/motion/magnetic";
-import { projects, capabilities, experiences } from "@/content/site";
-
-const WEB = ["ats-screener", "axelot", "netdash"];
-const FEATURED_ORDER = ["ats-screener", "sunnify", "netdash"];
+import {
+  projects,
+  capabilities,
+  experiences,
+  WEB_PROJECTS,
+  FEATURED_ORDER,
+} from "@/content/site";
 
 export default function Home() {
   const featured = projects
@@ -44,7 +47,7 @@ export default function Home() {
                   <ProjectWindow
                     src={p.image}
                     alt={`${p.name} screenshot`}
-                    url={WEB.includes(p.slug) ? p.links.live : undefined}
+                    url={WEB_PROJECTS.includes(p.slug) ? p.links.live : undefined}
                   />
                   <div className="mt-5 flex items-baseline justify-between gap-4">
                     <h3 className="font-display text-xl font-semibold text-bone transition-colors group-hover:text-ember">

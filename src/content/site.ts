@@ -345,6 +345,12 @@ After the original single-file build, the game was refactored into eight documen
   },
 ];
 
+// projects with a public web deploy get a url bar in the window chrome
+export const WEB_PROJECTS = ["ats-screener", "axelot", "netdash"];
+
+// display order for the featured projects on the home and projects pages
+export const FEATURED_ORDER = ["ats-screener", "sunnify", "netdash"];
+
 export const research = {
   title: "When Semantic Caches Lie",
   subtitle:

@@ -9,7 +9,7 @@ import { ProjectWindow } from "@/components/ui/project-window";
 import { ProjectSignals, ActivePill } from "@/components/ui/project-signals";
 import { ResearchCard } from "@/components/home/research-card";
 import { GithubIcon } from "@/components/ui/icons";
-import { projects } from "@/content/site";
+import { projects, WEB_PROJECTS, FEATURED_ORDER } from "@/content/site";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -18,10 +18,6 @@ export const metadata: Metadata = {
     "Projects Sunny Patel has built and shipped end to end: a resume screener 2,000+ people use, open-source developer tools, security work, and an independent research paper with a DOI.",
   alternates: { canonical: "/projects" },
 };
-
-// web apps with a public deploy get a url bar; desktop apps and the local CTF do not.
-const WEB = ["ats-screener", "axelot", "netdash"];
-const FEATURED_ORDER = ["ats-screener", "sunnify", "netdash"];
 
 export default function ProjectsPage() {
   const featured = projects
@@ -59,7 +55,7 @@ export default function ProjectsPage() {
                   <ProjectWindow
                     src={p.image}
                     alt={`${p.name} screenshot`}
-                    url={WEB.includes(p.slug) ? p.links.live : undefined}
+                    url={WEB_PROJECTS.includes(p.slug) ? p.links.live : undefined}
                     glow
                   />
                 </Link>
@@ -167,7 +163,7 @@ export default function ProjectsPage() {
                 <ProjectWindow
                   src={p.image}
                   alt={`${p.name} screenshot`}
-                  url={WEB.includes(p.slug) ? p.links.live : undefined}
+                  url={WEB_PROJECTS.includes(p.slug) ? p.links.live : undefined}
                   objectPosition={p.slug === "knifethrow" ? "object-center" : undefined}
                 />
                 <div className="mt-5 flex items-baseline justify-between gap-4">
