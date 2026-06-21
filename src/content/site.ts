@@ -38,7 +38,7 @@ export const about = {
   ],
   facts: [
     { k: "Based in", v: "Greater Toronto Area" },
-    { k: "Currently", v: "SWE Intern at IBM (watsonx Workshop)" },
+    { k: "Currently", v: "Software Developer Intern at IBM (watsonx Workshop)" },
     { k: "Studying", v: "Honours CS, Ontario Tech" },
     { k: "Focus", v: "Full-stack, cloud, systems" },
   ],
