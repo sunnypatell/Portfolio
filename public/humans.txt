@@ -1,5 +1,5 @@
 /* TEAM */
-  Engineer: Sunny Patel
+  Developer: Sunny Patel
   Site: sunnypatel.net
   GitHub: @sunnypatell
   Location: Greater Toronto Area, Canada
