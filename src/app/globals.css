@@ -41,6 +41,7 @@
 }
 
 html {
+  background-color: var(--color-ink); /* first paint is ink, so reloads never flash white */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -115,6 +116,20 @@ body {
   pointer-events: none;
   opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* gentle idle bob for the contact bitmoji; reduced-motion disables it via the rule above */
+@keyframes float-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+}
+.float-bob {
+  animation: float-bob 5s var(--ease-premium) infinite;
 }
 
 /* ── page transition (template re-mounts per route) ─────────────── */

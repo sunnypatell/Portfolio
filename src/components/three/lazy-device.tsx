@@ -14,9 +14,7 @@ function lowPower() {
   );
 }
 
-// absolute-fills its (reserved-height) parent, so mounting the canvas can never
-// shift page layout. mobile/low-power gets a static poster; the 3d render loop
-// pauses whenever it scrolls offscreen or the tab is hidden.
+// reserved-height parent + absolute fill so mounting the canvas never shifts layout
 export function LazyDevice({ poster }: { poster: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<"loading" | "static" | "3d">("loading");
@@ -47,7 +45,7 @@ export function LazyDevice({ poster }: { poster: string }) {
   }, [mode]);
 
   return (
-    <div ref={ref} className="absolute inset-0">
+    <div ref={ref} className="absolute inset-0 bg-ink">
       {mode === "static" && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
