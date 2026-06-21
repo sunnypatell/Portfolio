@@ -6,11 +6,12 @@ import { Component, useEffect, useRef, useState, type ReactNode } from "react";
 // chunk only loads when rendered, so low-power devices never download three
 const PcScene = dynamic(() => import("./pc-scene"), { ssr: false });
 
+// poster is only for reduced-motion users and genuinely weak hardware. touch devices
+// still get the live 3d, it's the same model with the idle spin, just no drag-to-orbit.
 function lowPower() {
   return (
-    (navigator.hardwareConcurrency ?? 8) <= 4 ||
     window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-    !window.matchMedia("(pointer: fine)").matches
+    (navigator.hardwareConcurrency ?? 8) <= 2
   );
 }
 
