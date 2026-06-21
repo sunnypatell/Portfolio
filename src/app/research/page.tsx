@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Container, Eyebrow } from "@/components/ui/primitives";
 import { RevealText } from "@/components/motion/reveal-text";
 import { Reveal } from "@/components/ui/reveal";
-import { GithubIcon } from "@/components/ui/icons";
+import { GithubIcon, OrcidIcon } from "@/components/ui/icons";
 import { CopyButton } from "@/components/ui/copy-button";
 import { research } from "@/content/site";
 
@@ -177,6 +177,7 @@ export default function ResearchPage() {
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-1.5 text-muted transition-colors hover:text-bone"
             >
+              <OrcidIcon className="h-4 w-4" />
               ORCID
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
