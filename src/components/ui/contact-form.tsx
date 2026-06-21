@@ -1,10 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import emailjs from "@emailjs/browser";
+import confetti from "canvas-confetti";
 import { ArrowRight } from "lucide-react";
 import { ctaClass } from "@/components/ui/primitives";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
 type Status = "idle" | "sending" | "sent" | "error";
 type Errors = { name?: string; email?: string; message?: string };
@@ -32,6 +37,17 @@ function validate(d: Record<string, string>): Errors {
   return e;
 }
 
+// celebratory burst in the site palette only, never the default rainbow
+function celebrate() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const colors = ["#d9663d", "#e8794e", "#ede8dc", "#b5431f"];
+  confetti({ particleCount: 70, spread: 68, startVelocity: 38, scalar: 0.9, ticks: 170, origin: { y: 0.7 }, colors });
+  window.setTimeout(
+    () => confetti({ particleCount: 30, spread: 90, scalar: 0.8, ticks: 150, origin: { y: 0.75 }, colors }),
+    140
+  );
+}
+
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [serverError, setServerError] = useState("");
@@ -46,8 +62,8 @@ export function ContactForm() {
     document.head.appendChild(s);
   }, []);
 
-  async function getToken(): Promise<string | undefined> {
-    if (!SITE_KEY || !window.grecaptcha) return undefined;
+  async function getToken(): Promise<string> {
+    if (!SITE_KEY || !window.grecaptcha) return "";
     return new Promise((resolve) =>
       window.grecaptcha!.ready(() =>
         window.grecaptcha!.execute(SITE_KEY, { action: "contact" }).then(resolve)
@@ -66,8 +82,19 @@ export function ContactForm() {
     if (firstErr) {
       setStatus("error");
       setServerError("");
-      // move focus to the first invalid field so keyboard/SR users land on it
       requestAnimationFrame(() => document.getElementById(firstErr)?.focus());
+      return;
+    }
+
+    if (data.company) {
+      setStatus("sent"); // honeypot tripped: pretend success, send nothing
+      form.reset();
+      return;
+    }
+
+    if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+      setStatus("error");
+      setServerError("Email isn't wired up yet. Reach me at sunnypatel124555@gmail.com.");
       return;
     }
 
@@ -75,23 +102,28 @@ export function ContactForm() {
     setServerError("");
     try {
       const token = await getToken();
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, token }),
-      });
-      const json = await res.json();
-      if (!res.ok || !json.ok) throw new Error(json.error ?? "failed");
+      // superset of common template var names so it maps to any emailjs template
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
+          name: data.name,
+          from_name: data.name,
+          email: data.email,
+          reply_to: data.email,
+          user_email: data.email,
+          message: data.message,
+          "g-recaptcha-response": token,
+        },
+        { publicKey: PUBLIC_KEY }
+      );
       setStatus("sent");
       form.reset();
       setErrors({});
-    } catch (err) {
+      celebrate();
+    } catch {
       setStatus("error");
-      setServerError(
-        err instanceof Error && err.message !== "failed"
-          ? err.message
-          : "Something went wrong. Try email instead."
-      );
+      setServerError("Something went wrong. Try email instead.");
     }
   }
 
@@ -162,7 +194,6 @@ export function ContactForm() {
         )}
       </div>
 
-      {/* honeypot */}
       <input
         type="text"
         name="company"
@@ -199,9 +230,7 @@ export function ContactForm() {
       </div>
 
       {SITE_KEY && (
-        <p className="font-mono text-[0.65rem] text-muted">
-          Protected by reCAPTCHA.
-        </p>
+        <p className="font-mono text-[0.65rem] text-muted">Protected by reCAPTCHA.</p>
       )}
     </form>
   );

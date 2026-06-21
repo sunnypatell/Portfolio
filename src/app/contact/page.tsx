@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Mail, MapPin } from "lucide-react";
 import { Container, Eyebrow } from "@/components/ui/primitives";
 import { RevealText } from "@/components/motion/reveal-text";
@@ -75,6 +76,16 @@ export default function ContactPage() {
                 {profile.location}
               </li>
             </ul>
+
+            <div className="mt-12" aria-hidden>
+              <Image
+                src="/assets/contact-bitmoji.webp"
+                alt=""
+                width={320}
+                height={320}
+                className="float-bob w-36 select-none sm:w-44"
+              />
+            </div>
           </div>
 
           <ContactForm />
