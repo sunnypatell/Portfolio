@@ -11,7 +11,7 @@ import { profile } from "@/content/site";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Sunny Patel, a software developer at IBM (watsonx Workshop) in the Greater Toronto Area. Email, LinkedIn, or the contact form all reach me directly.",
+    "Get in touch with Sunny Patel, a full-stack software developer in the Greater Toronto Area. Email, LinkedIn, or the contact form all reach me directly.",
   alternates: { canonical: "/contact" },
 };
 

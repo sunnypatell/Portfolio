@@ -33,13 +33,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${p.name} · Sunny Patel`,
       description: p.oneLiner,
       url: `/projects/${p.slug}`,
-      images: [{ url: p.image, alt: `${p.name} by Sunny Patel` }],
+      images: [
+        {
+          url: "/og-image.png",
+          width: 2560,
+          height: 1280,
+          alt: "Sunny Patel, I build the whole stack, from the screen to the silicon",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: `${p.name} · Sunny Patel`,
       description: p.oneLiner,
-      images: [p.image],
+      images: ["/og-image.png"],
     },
   };
 }

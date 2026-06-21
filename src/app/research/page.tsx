@@ -20,12 +20,19 @@ export const metadata: Metadata = {
     description:
       "An independent, DOI-published research paper on the reliability of semantic caches for large language models.",
     url: "/research",
-    images: [{ url: research.image, alt: research.title }],
+    images: [
+      {
+        url: "/og-image.png",
+        width: 2560,
+        height: 1280,
+        alt: "Sunny Patel, I build the whole stack, from the screen to the silicon",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${research.title} · Sunny Patel`,
-    images: [research.image],
+    images: ["/og-image.png"],
   },
 };
 

@@ -48,7 +48,6 @@ export const metadata: Metadata = {
     "Cloud",
     "React",
     "Three.js",
-    "IBM",
     "Ontario Tech",
   ],
   authors: [{ name: "Sunny Patel", url: siteUrl }],
@@ -62,12 +61,21 @@ export const metadata: Metadata = {
     description:
       "A developer across the whole stack, from real-time web to the infrastructure underneath.",
     siteName: "Sunny Patel",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 2560,
+        height: 1280,
+        alt: "Sunny Patel, I build the whole stack, from the screen to the silicon",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Sunny Patel · Software Developer",
     description:
       "A developer across the whole stack, from real-time web to the infrastructure underneath.",
+    images: ["/og-image.png"],
   },
 };
 
