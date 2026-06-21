@@ -54,6 +54,8 @@ export function LiveUserCount({ fallback = "2,000+" }: { fallback?: string }) {
       };
       requestAnimationFrame(tick);
     };
+    // animate only when actually scrolled into view, so the count-up always plays
+    // for the viewer (a timer would fire it off-screen and they'd miss it)
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
@@ -61,14 +63,10 @@ export function LiveUserCount({ fallback = "2,000+" }: { fallback?: string }) {
           io.disconnect();
         }
       },
-      { threshold: 0.4 }
+      { threshold: 0.35 }
     );
     io.observe(el);
-    const safety = window.setTimeout(run, 1500);
-    return () => {
-      io.disconnect();
-      window.clearTimeout(safety);
-    };
+    return () => io.disconnect();
   }, [target]);
 
   return (
