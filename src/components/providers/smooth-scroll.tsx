@@ -5,9 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// one raf loop: gsap's ticker drives lenis (autoRaf off) so scroll-scrubbed
-// 3d and dom timelines stay perfectly in sync. see r3f/gsap best practice.
-// reduced-motion users get plain native scroll (no lenis), which is the point.
+// one raf loop: gsap's ticker drives lenis so scroll-scrubbed 3d and dom stay in sync; reduced-motion skips lenis
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<LenisRef>(null);
   const [reduced, setReduced] = useState(false);

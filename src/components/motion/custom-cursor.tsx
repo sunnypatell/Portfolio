@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
-// fine-pointer-only cursor: an instant dot + a lagging ring that grows over
-// interactive targets. disabled on touch and for reduced-motion.
+// fine-pointer-only cursor: instant dot + lagging ring that grows over interactive targets
 export function CustomCursor() {
   const [enabled, setEnabled] = useState(false);
   const dot = useRef<HTMLDivElement>(null);

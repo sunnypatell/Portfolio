@@ -8,8 +8,7 @@ import { Footer } from "@/components/layout/footer";
 import { profile } from "@/content/site";
 import "./globals.css";
 
-// display + structural mono are engineer-coded (geist = vercel's typeface);
-// body is hanken for a warmer, non-default counterpoint
+// geist for display + mono, hanken for body warmth
 const display = Geist({
   variable: "--font-display-src",
   subsets: ["latin"],

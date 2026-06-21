@@ -13,8 +13,7 @@ type Cmd = {
   run: () => void;
 };
 
-// a branded-terminal command menu. opens on cmd/ctrl+k or the nav trigger
-// (a "cmdk:open" window event), so it stays decoupled from the nav.
+// branded command menu; opens on cmd/ctrl+k or a "cmdk:open" window event from the nav
 export function CommandPalette() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -148,6 +147,7 @@ export function CommandPalette() {
       className="fixed inset-0 z-[60] flex items-start justify-center p-4 pt-[16vh]"
     >
       <button
+        type="button"
         aria-label="Close command menu"
         tabIndex={-1}
         onClick={close}
@@ -195,6 +195,7 @@ export function CommandPalette() {
                   </div>
                 )}
                 <button
+                  type="button"
                   id={`cmdk-${c.id}`}
                   role="option"
                   aria-selected={isActive}

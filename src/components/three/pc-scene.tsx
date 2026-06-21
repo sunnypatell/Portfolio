@@ -17,9 +17,7 @@ function Model() {
   const ref = useRef<Group>(null);
   const { scene } = useGLTF(URL);
 
-  // the sketchfab export ships every material as alphaMode BLEND, which makes the
-  // rig render see-through (front faces vanish, the screen bleeds through the back).
-  // force opaque + depth write so it reads as a solid object.
+  // sketchfab ships every material as alphaMode BLEND (renders see-through); force opaque + depth write
   useMemo(() => {
     scene.traverse((o) => {
       const mesh = o as Mesh;
@@ -34,8 +32,7 @@ function Model() {
       });
     });
   }, [scene]);
-  // screen faces the camera with a slow idle sway, so the personalized crt
-  // stays readable instead of spinning out of view.
+  // slow idle sway so the crt screen stays readable instead of spinning away
   useFrame((state) => {
     const g = ref.current;
     if (!g) return;
@@ -53,8 +50,7 @@ function Model() {
 }
 useGLTF.preload(URL);
 
-// transparent canvas so the rig floats with no visible container. warm key +
-// cool rim grade it into the graphite/amber theme; bloom lifts the crt glow.
+// transparent canvas; warm key + cool rim grade it into the theme, bloom lifts the crt glow
 export default function PcScene({ active = true }: { active?: boolean }) {
   return (
     <Canvas
