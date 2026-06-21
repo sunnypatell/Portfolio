@@ -2,12 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 
-// reads the SAME public Firestore counter the ATS Screener landing animates, so
-// this number is genuinely live. the web api key is public by design (it ships in
-// every firebase client bundle) and stats/public is unauthenticated-readable.
-// note the named database is "default" (not "(default)").
-const COUNTER_URL =
-  "https://firestore.googleapis.com/v1/projects/ats-screener-app/databases/default/documents/stats/public?key=***REMOVED-SEE-ENV***";
+// public firestore counter shared with the ats screener; firebase web key stays in env, not source.
+const KEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+const COUNTER_URL = KEY
+  ? `https://firestore.googleapis.com/v1/projects/ats-screener-app/databases/default/documents/stats/public?key=${KEY}`
+  : null;
 
 export function LiveUserCount({ fallback = "2,000+" }: { fallback?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -17,6 +16,10 @@ export function LiveUserCount({ fallback = "2,000+" }: { fallback?: string }) {
   const animated = useRef(false);
 
   useEffect(() => {
+    if (!COUNTER_URL) {
+      setFailed(true);
+      return;
+    }
     const ac = new AbortController();
     fetch(COUNTER_URL, { signal: ac.signal })
       .then((r) => (r.ok ? r.json() : Promise.reject()))
@@ -29,8 +32,7 @@ export function LiveUserCount({ fallback = "2,000+" }: { fallback?: string }) {
     return () => ac.abort();
   }, []);
 
-  // count from 0 to target on scroll-into-view, easeOutExpo over 2500ms.
-  // this is a 1:1 port of the ATS Screener landing's animateCount.
+  // count 0 to target on scroll-in, easeOutExpo over 2500ms; 1:1 port of the ats screener's animateCount
   useEffect(() => {
     if (target == null) return;
     const el = ref.current;
