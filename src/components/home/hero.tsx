@@ -19,14 +19,14 @@ export function Hero() {
         className="pointer-events-none absolute right-0 top-1/2 -z-10 h-[42rem] w-[42rem] -translate-y-1/2 translate-x-1/3 rounded-full bg-ember/12 blur-[140px]"
       />
 
-      <Container className="grid min-h-dvh items-center gap-12 pb-24 pt-32 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:pt-24">
+      <Container className="grid items-center gap-12 pb-16 pt-28 lg:min-h-dvh lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:pt-24 lg:pb-24">
         <div>
           <div className="flex items-center gap-3 font-mono text-xs text-muted">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ember opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-ember" />
             </span>
-            {profile.status.label} at {profile.status.org}
+            {profile.status.available}
           </div>
 
           <RevealText
@@ -67,7 +67,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="relative h-[56vh] min-h-[320px] w-full lg:h-[80vh]">
+        <div className="relative h-[40vh] min-h-[300px] w-full lg:h-[80vh]">
           <LazyDevice poster="/assets/hero-poster.webp" />
         </div>
       </Container>
