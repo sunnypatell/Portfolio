@@ -1,0 +1,219 @@
+@import "tailwindcss";
+
+/* ── graphite & ember design tokens ─────────────────────────────── */
+@theme {
+  --color-ink: #0b0d0f; /* graphite-black base */
+  --color-ink-2: #0e1113; /* faint raise for banded sections */
+  --color-surface: #121518; /* panels / cards */
+  --color-surface-2: #191d21; /* raised panels */
+  --color-line: #262b30; /* hairline borders (decorative) */
+  --color-field: #5a646d; /* control borders, ~3:1 non-text contrast on surface */
+  --color-bone: #ede8dc; /* warm off-white primary text */
+  --color-bone-dim: #c7c3ba; /* slightly dimmed bone */
+  --color-muted: #8a929b; /* steel secondary / labels (AA on ink) */
+  --color-ember: #d9663d; /* the one accent — heated-metal amber, used as punctuation */
+  --color-ember-bright: #e8794e; /* hover / glow */
+  --color-ember-deep: #b5431f; /* pressed / shadow */
+  --color-dot-inactive: #2c3338; /* inert window-chrome "traffic light" dots, one source for both terminals */
+
+  --radius: 0.625rem;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --shadow-panel: 0 1px 0 0 rgb(255 255 255 / 0.03) inset,
+    0 24px 60px -30px rgb(0 0 0 / 0.7);
+  --shadow-ember: 0 0 0 1px rgb(224 97 58 / 0.4),
+    0 8px 30px -8px rgb(224 97 58 / 0.45);
+  --shadow-float: 0 40px 90px -40px rgb(0 0 0 / 0.85); /* framed image / floating panel elevation */
+}
+
+/* fonts come from next/font runtime vars set on <html> */
+@theme inline {
+  --font-display: var(--font-display-src);
+  --font-body: var(--font-body-src);
+  --font-mono: var(--font-mono-src);
+}
+
+/* ── base ───────────────────────────────────────────────────────── */
+:root {
+  color-scheme: dark;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden; /* contain decorative glow bleed without a horizontal scroll */
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv01";
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: var(--color-ember);
+  color: #0b0d0f;
+}
+
+/* two-layer ring: ember stays on-brand, the bone halo guarantees >=3:1 even on
+   ember-adjacent or mid-tone (field) surfaces where ember alone would wash out */
+:focus-visible {
+  outline: 2px solid var(--color-ember);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-bone) 28%, transparent);
+  border-radius: 3px;
+}
+
+/* subtle, on-brand scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: #232a30;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #313a42;
+}
+
+/* honour reduced motion across the board */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── utilities ──────────────────────────────────────────────────── */
+@utility text-balance {
+  text-wrap: balance;
+}
+
+/* hairline grain so flat panels never read as dead-flat AI gradients.
+   plain css (not @utility) because tailwind v4 @utility forbids pseudo names */
+.grain {
+  position: relative;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── page transition (template re-mounts per route) ─────────────── */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page-enter {
+  animation: page-in 0.6s var(--ease-premium) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-enter {
+    animation: none;
+  }
+}
+
+/* ── custom cursor (fine pointers only) ─────────────────────────── */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-ember);
+  pointer-events: none;
+  z-index: 100;
+}
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 38px;
+  height: 38px;
+  border: 1px solid color-mix(in srgb, var(--color-bone) 35%, transparent);
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 100;
+}
+@media (pointer: fine) {
+  .cursor-active {
+    cursor: none;
+  }
+}
+
+/* ── accessibility helpers ──────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  margin: 0.75rem;
+  transform: translateY(-150%);
+  border: 1px solid var(--color-field);
+  border-radius: 0.5rem;
+  background: var(--color-surface);
+  padding: 0.5rem 1rem;
+  color: var(--color-bone);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  transition: transform 0.2s var(--ease-premium);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* clean print output (resume is a separate PDF, but any page should print) */
+@media print {
+  header,
+  footer,
+  .cursor-dot,
+  .cursor-ring,
+  canvas {
+    display: none !important;
+  }
+  :root {
+    color-scheme: light;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
+}
+
