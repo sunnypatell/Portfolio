@@ -40,6 +40,8 @@ export const metadata: Metadata = {
   description,
   keywords: [
     "Sunny Patel",
+    "Sunny Jayendra Patel",
+    "Sunny J Patel",
     "Software Developer",
     "Full-stack",
     "Systems",
@@ -82,6 +84,7 @@ const structuredData = {
       "@type": "Person",
       "@id": `${siteUrl}/#person`,
       name: "Sunny Patel",
+      alternateName: ["Sunny Jayendra Patel", "Sunny J Patel"],
       url: siteUrl,
       jobTitle: "Software Developer",
       email: profile.email,
