@@ -109,9 +109,12 @@ export function ContactForm() {
         {
           name: data.name,
           from_name: data.name,
+          to_name: "Sunny Patel",
           email: data.email,
+          from_email: data.email, // the var the actual template reads; without it the email came through empty
           reply_to: data.email,
           user_email: data.email,
+          to_email: "sunnypatel124555@gmail.com",
           message: data.message,
           "g-recaptcha-response": token,
         },
