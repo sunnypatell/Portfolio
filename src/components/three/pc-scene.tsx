@@ -32,13 +32,13 @@ function Model({ scale }: { scale: number }) {
       });
     });
   }, [scene]);
-  // slow idle sway so the crt screen stays readable instead of spinning away
+  // gentle idle drift so the crt screen stays readable instead of spinning away
   useFrame((state) => {
     const g = ref.current;
     if (!g) return;
     const t = state.clock.elapsedTime;
-    g.rotation.y = 4.4 + Math.sin(t * 0.3) * 0.1;
-    g.rotation.x = -0.03 + Math.sin(t * 0.24) * 0.025;
+    g.rotation.y = 4.4 + Math.sin(t * 0.6) * 0.1;
+    g.rotation.x = -0.03 + Math.sin(t * 0.46) * 0.025;
   });
   return (
     <Center>
@@ -67,7 +67,7 @@ export default function PcScene({ active = true }: { active?: boolean }) {
       frameloop={active ? "always" : "never"}
       dpr={[1, 1.6]}
       gl={{ antialias: true, powerPreference: "high-performance", alpha: true }}
-      camera={{ position: [0, 0.5, 10], fov: 28 }}
+      camera={{ position: [0, 2.59, 9.67], fov: 28 }} // starts at the lower tilt (min polar)
       onCreated={({ gl }) => {
         // let a vertical swipe scroll the page instead of being eaten by the canvas
         gl.domElement.style.touchAction = "pan-y";
