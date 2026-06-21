@@ -112,6 +112,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      style={{ backgroundColor: "#0b0d0f" }}
       className={`${display.variable} ${mono.variable} ${body.variable}`}
     >
       <body className="min-h-dvh font-body antialiased">
