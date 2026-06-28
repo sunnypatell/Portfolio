@@ -10,6 +10,14 @@ updates:
         dependency-type: production
       development:
         dependency-type: development
+    ignore:
+      # @react-three/postprocessing peers three < 0.185; hold three (and its types) on
+      # 0.184.x until postprocessing supports 0.185+, otherwise the bump reintroduces a
+      # peer mismatch on the hero's effectcomposer/bloom.
+      - dependency-name: "three"
+        versions: [">=0.185.0"]
+      - dependency-name: "@types/three"
+        versions: [">=0.185.0"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
