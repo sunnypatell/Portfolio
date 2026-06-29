@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/primitives";
+import { OtuWebring } from "@/components/ui/otu-webring";
 import { navLinks, profile } from "@/content/site";
 
 export function Footer() {
@@ -58,8 +59,13 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-line pt-6 font-mono text-[0.7rem] text-muted sm:flex-row sm:justify-between">
-          <span>© {year} Sunny Patel</span>
+        <div className="mt-10 flex flex-col gap-2 border-t border-line pt-6 font-mono text-[0.7rem] text-muted sm:flex-row sm:items-center sm:justify-between">
+          {/* on mobile the webring shares the copyright line (no extra row);
+              sm:contents flattens this so it becomes the centered middle item on desktop */}
+          <div className="flex items-center justify-between gap-4 sm:contents">
+            <span>© {year} Sunny Patel</span>
+            <OtuWebring />
+          </div>
           <span>Designed and built from scratch.</span>
         </div>
       </Container>
