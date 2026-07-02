@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Hanken_Grotesk } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+// import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Providers } from "@/components/providers";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
@@ -142,7 +142,8 @@ export default function RootLayout({
           <Footer />
         </Providers>
         <Analytics />
-        <SpeedInsights />
+        {/* paused while over the hobby quota; uncomment to resume collection */}
+        {/* <SpeedInsights /> */}
       </body>
     </html>
   );
