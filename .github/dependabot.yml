@@ -18,6 +18,10 @@ updates:
         versions: [">=0.185.0"]
       - dependency-name: "@types/three"
         versions: [">=0.185.0"]
+      # eslint-config-next's bundled eslint-plugin-react crashes under eslint 10;
+      # hold eslint on 9.x until a next release supports it.
+      - dependency-name: "eslint"
+        versions: [">=10.0.0"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
