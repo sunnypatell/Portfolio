@@ -53,9 +53,9 @@
     "@types/react-dom": "^19",
     "@types/three": "^0.184.0",
     "eslint": "^9",
-    "eslint-config-next": "16.2.10",
+    "eslint-config-next": "16.2.12",
     "tailwindcss": "^4",
-    "typescript": "^6"
+    "typescript": "^7"
   },
   "overrides": {
     "postcss": "^8.5.10"
