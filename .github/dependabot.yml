@@ -22,6 +22,10 @@ updates:
       # hold eslint on 9.x until a next release supports it.
       - dependency-name: "eslint"
         versions: [">=10.0.0"]
+      # typescript-eslint hard-errors on ts 7 and still peers <6.1.0; hold typescript
+      # on 6.x until it ships support, otherwise lint and the vercel build both fail.
+      - dependency-name: "typescript"
+        versions: [">=7.0.0"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
