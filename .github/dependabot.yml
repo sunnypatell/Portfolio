@@ -11,13 +11,6 @@ updates:
       development:
         dependency-type: development
     ignore:
-      # @react-three/postprocessing peers three < 0.185; hold three (and its types) on
-      # 0.184.x until postprocessing supports 0.185+, otherwise the bump reintroduces a
-      # peer mismatch on the hero's effectcomposer/bloom.
-      - dependency-name: "three"
-        versions: [">=0.185.0"]
-      - dependency-name: "@types/three"
-        versions: [">=0.185.0"]
       # eslint-config-next's bundled eslint-plugin-react crashes under eslint 10;
       # hold eslint on 9.x until a next release supports it.
       - dependency-name: "eslint"
