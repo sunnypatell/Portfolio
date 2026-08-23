@@ -144,9 +144,81 @@ export type Project = {
   active?: boolean; // still shipping releases / commits today
   metrics?: { value: string; label: string; href?: string; live?: boolean }[]; // durable traction stats; live pulls the real number
   badges?: { src: string; alt: string; href: string }[]; // live shields.io badges
+  // set only when the work is archived with a DOI. renders the same "cite this
+  // work" block the paper gets, because a citable artifact is citable whether it
+  // is a pdf or a piece of software.
+  cite?: {
+    doi: string;
+    doiLabel: string;
+    orcid: string;
+    apa: string;
+    bibtex: string;
+  };
 };
 
 export const projects: Project[] = [
+  {
+    slug: "basalt",
+    name: "basalt",
+    tagline: "The check NVIDIA never shipped",
+    oneLiner:
+      "World's first hazard checker for NVIDIA Blackwell (sm_120), with an assembler and scheduler matched against their own compiler byte for byte. The silicon trusts whatever wrote it.",
+    summary:
+      "On NVIDIA sm_120 there is no hardware interlock. 21 bits of every instruction tell the GPU how long to wait, and a count one cycle short reads a stale register and returns a wrong answer at full speed, with no crash and no warning. Compilers write those bits; nothing read them back. Pointed at 2,762 kernels NVIDIA ships in CUDA, held out of every table it uses, basalt verifies 10,218,030 dependencies with zero errors.",
+    detail: `An NVIDIA GPU instruction is 128 bits, and 21 of them are not the instruction at all. They are a scheduling control word: how many cycles to stall, which scoreboards to signal, which to wait on. **The hardware does not check any of it.** On \`sm_120\` there is no interlock on fixed-latency instructions, so if a stall count is shorter than the latency of a value the next instruction reads, nothing faults and nothing warns. It computes on stale data, at full speed, every single time. That is a bug that does not crash and does not show up in a debugger. It just returns numbers that are quietly wrong.
+
+Compilers and assemblers write those bits. Nothing read them back and said whether they were safe. Building the thing that does meant deriving the instruction set by experiment rather than documentation: take an encoding that assembled, flip one bit, decode the result, record what moved.
+
+The hard part is that a checker calibrated on a corpus cannot fail on that corpus. The tightest gap the compiler was seen to leave becomes the floor, by construction. So the real test was machine code basalt had never touched: NVIDIA's own shipped libraries, held out of every table the checker reads. The first run reported **6,593 errors** in a JPEG decoder that has never returned a wrong pixel, and not one of them was NVIDIA's. Thirteen were defects in basalt's own model, each invisible on a corpus it generates itself. Fixing those took it to zero, and zero over one library was not evidence either, so widening the held-out set by a factor of eighty took it straight back to 940 and found five more. [All thirteen corrections are written up](https://github.com/sunnypatell/basalt/blob/main/docs/FINDINGS.md).
+
+Two more tools exist to keep that one honest. The assembler has to reproduce the vendor compiler's exact 128 bits, and does so for 4,585,336 of 5,237,448 shipped instructions with zero wrong, refusing anything it cannot place by name rather than guessing. The scheduler throws away every control bit the compiler chose, computes its own, and the GPU computes byte-identical results for 439 of 439 comparable kernels. A checker and a scheduler sharing a latency model will agree with each other while both being wrong, so only the silicon settles it.
+
+Nothing NVIDIA wrote is in it. No source, no headers, no documentation: it drives their publicly distributed binaries as external processes and records what they do, which is the footing this kind of work has stood on for over a decade. The release is archived with a DOI, so a number quoted from it points at a fixed commit rather than at a moving branch.`,
+    highlights: [
+      "A stall of `0` is not zero cycles but a 37-cycle safe wait, so summing raw stall values gets the arithmetic wrong in the one direction that matters",
+      "Severity follows provenance: only a hardware-grounded number may allege an error, a mined one may only lower a claim, an assumed one stays a warning",
+      "345 instruction forms across 90 opcodes, derived by flipping one bit at a time and recording what moved, then derived again from a second compiler release as a control",
+      "Three independent latency methods that do not always agree, because chain timing, what the compiler schedules, and fault injection are not quite the same question",
+      "Reproducible from a clean checkout: 19 controls in one command, and a control that could not run reports as skipped rather than passed",
+    ],
+    stack: ["Python", "NVIDIA SASS", "sm_120 / Blackwell", "CUDA Driver API", "ptxas / nvdisasm", "ELF / cubin", "PyPI"],
+    links: {
+      repo: "https://github.com/sunnypatell/basalt",
+      docs: "https://github.com/sunnypatell/basalt/blob/main/docs/FINDINGS.md",
+    },
+    image: "/assets/shots/basalt.webp",
+    featured: true,
+    year: "2026",
+    active: true,
+    badges: [
+      {
+        src: "https://img.shields.io/badge/DOI-10.5281%2Fzenodo.22072811-d9663d?style=flat&labelColor=15191c",
+        alt: "DOI 10.5281/zenodo.22072811",
+        href: "https://doi.org/10.5281/zenodo.22072811",
+      },
+      {
+        src: "https://img.shields.io/pypi/v/basalt-sass?style=flat&label=pypi&color=d9663d&labelColor=15191c",
+        alt: "PyPI version",
+        href: "https://pypi.org/project/basalt-sass/",
+      },
+    ],
+    cite: {
+      doi: "https://doi.org/10.5281/zenodo.22072811",
+      doiLabel: "10.5281/zenodo.22072811",
+      orcid: "https://orcid.org/0009-0005-3863-7642",
+      apa: "Patel, S. (2026). basalt: a hazard checker, assembler and scheduler for NVIDIA consumer Blackwell (sm_120) (Version 1.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.22072811",
+      bibtex: `@software{Patel_basalt_a_hazard_2026,
+  author  = {Patel, Sunny},
+  title   = {{basalt: a hazard checker, assembler and scheduler for
+             NVIDIA consumer Blackwell (sm\\_120)}},
+  year    = {2026},
+  version = {1.0.0},
+  doi     = {10.5281/zenodo.22072811},
+  url     = {https://doi.org/10.5281/zenodo.22072811},
+  license = {Apache-2.0}
+}`,
+    },
+  },
   {
     slug: "ats-screener",
     name: "ATS Screener",
@@ -285,37 +357,39 @@ Browsers can't send raw ICMP, so the Electron build adds a Node.js backend behin
       repo: "https://github.com/sunnypatell/netdash-toolkit",
     },
     image: "/assets/shots/netdash.webp",
-    featured: true,
+    featured: false, // moved to the second section to keep the featured strip at three
     year: "2025",
     active: true,
   },
-  {
-    slug: "securebank",
-    name: "SecureBank",
-    tagline: "A bank built to be hacked",
-    oneLiner:
-      "A dockerized, deliberately-vulnerable Next.js banking app that teaches SQL injection and broken-access-control through five graded, hands-on challenges.",
-    summary:
-      "SecureBank CTF is a full-stack banking simulation engineered to be broken on purpose. It behaves like a real app (login, transfers, transaction search, feedback) but hides production-shaped flaws: a double-decode injection bypass, stacked-query privilege escalation, and two access-control backdoors. Five documented challenges each ship a difficulty rating, objective, and full writeup, packaged behind one Docker command.",
-    detail: `Most AppSec training is either toy "spot the bug" snippets or sprawling labs nobody can stand up locally. SecureBank CTF lands in between: a believable Next.js / React banking app on a SQLite backend with no ORM, so every query path is hand-written and every vulnerability is deliberate, not accidental.
-
-The engineering is in making the flaws solvable but non-trivial. The login route strips SQL metacharacters with a regex, then URL-decodes the input twice, so a double-encoded payload slips past the filter and injects. The feedback endpoint routes its INSERT through SQLite's multi-statement exec instead of a prepared statement, turning a comment box into stacked-query privilege escalation, while the DELETE path stays parameterized. Two access-control backdoors round it out: an \`x-dev-mode\` header that drops the per-user WHERE clause, and a maintenance route that runs raw SQL only under a debug flag on a specific weekday.
-
-Each challenge ships an objective and full writeup, and the whole lab runs from one multi-stage Docker image with a seed-snapshot database that persists progress across restarts. SecureBank was a five-person university project: I authored the privilege-escalation challenge and was the largest contributor to the application and its Docker packaging, while four teammates each built a graded challenge of their own.`,
-    highlights: [
-      "Hand-written, ORM-free SQLite query paths (Next.js, React, better-sqlite3) so every flaw is deliberate",
-      "Filter-then-double-decode login bypass: a regex strips metacharacters, then double URL-decode reintroduces them",
-      "Stacked-query privilege escalation via the feedback INSERT, with the DELETE path left parameterized as a control",
-      "Two access-control backdoors: an `x-dev-mode` header and a weekday-gated debug route running raw SQL",
-      "Five graded challenges with writeups, one-command multi-stage Docker, seed-snapshot DB that persists progress",
-    ],
-    stack: ["Next.js", "React", "TypeScript", "SQLite", "better-sqlite3", "Docker"],
-    links: { repo: "https://github.com/sunnypatell/securebank-ctf" },
-    image: "/assets/shots/securebank.webp",
-    featured: false,
-    year: "2025",
-    team: "Five-person team at Ontario Tech",
-  },
+  // parked, not deleted: three in this section reads better than four.
+  // uncomment to bring SecureBank back and its route regenerates with it.
+  // {
+  //   slug: "securebank",
+  //   name: "SecureBank",
+  //   tagline: "A bank built to be hacked",
+  //   oneLiner:
+  //     "A dockerized, deliberately-vulnerable Next.js banking app that teaches SQL injection and broken-access-control through five graded, hands-on challenges.",
+  //   summary:
+  //     "SecureBank CTF is a full-stack banking simulation engineered to be broken on purpose. It behaves like a real app (login, transfers, transaction search, feedback) but hides production-shaped flaws: a double-decode injection bypass, stacked-query privilege escalation, and two access-control backdoors. Five documented challenges each ship a difficulty rating, objective, and full writeup, packaged behind one Docker command.",
+  //   detail: `Most AppSec training is either toy "spot the bug" snippets or sprawling labs nobody can stand up locally. SecureBank CTF lands in between: a believable Next.js / React banking app on a SQLite backend with no ORM, so every query path is hand-written and every vulnerability is deliberate, not accidental.
+  //
+  // The engineering is in making the flaws solvable but non-trivial. The login route strips SQL metacharacters with a regex, then URL-decodes the input twice, so a double-encoded payload slips past the filter and injects. The feedback endpoint routes its INSERT through SQLite's multi-statement exec instead of a prepared statement, turning a comment box into stacked-query privilege escalation, while the DELETE path stays parameterized. Two access-control backdoors round it out: an \`x-dev-mode\` header that drops the per-user WHERE clause, and a maintenance route that runs raw SQL only under a debug flag on a specific weekday.
+  //
+  // Each challenge ships an objective and full writeup, and the whole lab runs from one multi-stage Docker image with a seed-snapshot database that persists progress across restarts. SecureBank was a five-person university project: I authored the privilege-escalation challenge and was the largest contributor to the application and its Docker packaging, while four teammates each built a graded challenge of their own.`,
+  //   highlights: [
+  //     "Hand-written, ORM-free SQLite query paths (Next.js, React, better-sqlite3) so every flaw is deliberate",
+  //     "Filter-then-double-decode login bypass: a regex strips metacharacters, then double URL-decode reintroduces them",
+  //     "Stacked-query privilege escalation via the feedback INSERT, with the DELETE path left parameterized as a control",
+  //     "Two access-control backdoors: an `x-dev-mode` header and a weekday-gated debug route running raw SQL",
+  //     "Five graded challenges with writeups, one-command multi-stage Docker, seed-snapshot DB that persists progress",
+  //   ],
+  //   stack: ["Next.js", "React", "TypeScript", "SQLite", "better-sqlite3", "Docker"],
+  //   links: { repo: "https://github.com/sunnypatell/securebank-ctf" },
+  //   image: "/assets/shots/securebank.webp",
+  //   featured: false,
+  //   year: "2025",
+  //   team: "Five-person team at Ontario Tech",
+  // },
   {
     slug: "knifethrow",
     name: "KnifeThrow",
@@ -349,8 +423,10 @@ After the original single-file build, the game was refactored into eight documen
 // projects with a public web deploy get a url bar in the window chrome
 export const WEB_PROJECTS = ["ats-screener", "axelot", "netdash"];
 
-// display order for the featured projects on the home and projects pages
-export const FEATURED_ORDER = ["ats-screener", "sunnify", "netdash"];
+// display order for the featured projects on the home and projects pages.
+// basalt leads: it is the only one of these nobody else has built.
+// netdash sits in the second section now, so three stay up top.
+export const FEATURED_ORDER = ["basalt", "ats-screener", "sunnify" /*, "netdash" */];
 
 export const research = {
   title: "When Semantic Caches Lie",
