@@ -9,7 +9,8 @@ import { Parallax } from "@/components/motion/parallax";
 import { ProjectWindow } from "@/components/ui/project-window";
 import { RichText } from "@/components/ui/rich-text";
 import { ProjectSignals, ActivePill } from "@/components/ui/project-signals";
-import { GithubIcon } from "@/components/ui/icons";
+import { GithubIcon, OrcidIcon } from "@/components/ui/icons";
+import { CopyButton } from "@/components/ui/copy-button";
 import { projects } from "@/content/site";
 
 export const dynamicParams = false;
@@ -206,6 +207,62 @@ export default async function ProjectDetail({ params }: Props) {
           )}
         </div>
       </Container>
+
+      {p.cite && (
+        <Container className="mt-16">
+          <div className="rounded-xl border border-line bg-surface/40 p-6 sm:p-8">
+            <Eyebrow>cite this work</Eyebrow>
+
+            <div className="mt-5 space-y-4">
+              <div className="rounded-lg border border-line bg-ink/40 p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-muted">
+                    APA
+                  </span>
+                  <CopyButton text={p.cite.apa} label="Copy" />
+                </div>
+                <p className="mt-2.5 select-all break-words font-mono text-[0.8rem] leading-relaxed text-bone-dim">
+                  {p.cite.apa}
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-line bg-ink/40 p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-muted">
+                    BibTeX
+                  </span>
+                  <CopyButton text={p.cite.bibtex} label="Copy" />
+                </div>
+                <pre className="mt-2.5 select-all overflow-x-auto font-mono text-[0.72rem] leading-relaxed text-bone-dim">
+                  {p.cite.bibtex}
+                </pre>
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-xs">
+              <a
+                href={p.cite.doi}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-1.5 text-ember transition-colors hover:text-ember-bright"
+              >
+                DOI: {p.cite.doiLabel}
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+              <a
+                href={p.cite.orcid}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-1.5 text-muted transition-colors hover:text-bone"
+              >
+                <OrcidIcon className="h-4 w-4" />
+                ORCID
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+            </div>
+          </div>
+        </Container>
+      )}
 
       <Container className="mt-24 border-t border-line pt-10">
         <Link

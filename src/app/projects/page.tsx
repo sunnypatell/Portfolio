@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Projects Sunny Patel has built and shipped end to end: a resume screener 2,000+ people use, open-source developer tools, security work, and an independent research paper with a DOI.",
+    "Projects Sunny Patel has built and shipped end to end: a GPU verification tool published with a DOI, a resume screener 2,000+ people use, open-source developer tools, security work, and an independent research paper.",
   alternates: { canonical: "/projects" },
 };
 
@@ -36,9 +36,9 @@ export default function ProjectsPage() {
           Things I&apos;ve built, end to end.
         </RevealText>
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-bone-dim">
-          Apps real people use, systems and security tooling, and an independent
-          research paper, each one shipped and documented. Open any project for the
-          full story.
+          Apps real people use, systems work that goes down to the machine code, and
+          an independent research paper, each one shipped and documented. Open any
+          project for the full story.
         </p>
       </Container>
 
