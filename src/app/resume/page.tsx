@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 // rendered page images, so it reads perfectly on every device (mobile inline-pdf
 // is unreliable). the real pdf is one tap away, named so shares show the right file.
-const PAGES = ["/assets/resume-1-v4.webp", "/assets/resume-2-v4.webp"];
+const PAGES = ["/assets/resume-1-v5.webp", "/assets/resume-2-v5.webp"];
 
 export default function ResumePage() {
   return (
