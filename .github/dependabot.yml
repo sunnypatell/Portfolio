@@ -19,16 +19,6 @@ updates:
       # on 6.x until it ships support, otherwise lint and the vercel build both fail.
       - dependency-name: "typescript"
         versions: [">=7.0.0"]
-      # @react-three/fiber 9.7 peers react ">=19 <19.3" (v10 canaries too), so npm ci
-      # fails with ERESOLVE; hold react and its types on 19.2.x until r3f widens it.
-      - dependency-name: "react"
-        versions: [">=19.3.0"]
-      - dependency-name: "react-dom"
-        versions: [">=19.3.0"]
-      - dependency-name: "@types/react"
-        versions: [">=19.3.0"]
-      - dependency-name: "@types/react-dom"
-        versions: [">=19.3.0"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
