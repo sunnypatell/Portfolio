@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -30,7 +31,7 @@ export function CommandPalette() {
   }, []);
 
   const go = useCallback(
-    (href: string) => {
+    <T extends string>(href: Route<T>) => {
       close();
       router.push(href);
     },

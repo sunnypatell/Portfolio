@@ -16,6 +16,7 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  typedRoutes: true,
   transpilePackages: ["three"], // three ships untranspiled esm that drei pulls in
   images: {
     formats: ["image/avif", "image/webp"],
