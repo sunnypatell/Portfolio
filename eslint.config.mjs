@@ -6,10 +6,7 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
-    // these react-compiler advisories fire on legitimate, ssr-safe browser detection
-    // (reading matchMedia / navigator on mount) and timer-driven animation, and a few
-    // are false positives on plain state/memo values. keep them visible as warnings
-    // rather than ci-blocking errors; the patterns are intentional and verified.
+    // these fire on ssr-safe browser detection on mount and timer-driven animation
     rules: {
       "react-hooks/set-state-in-effect": "warn",
       "react-hooks/refs": "warn",

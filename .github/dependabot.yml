@@ -19,6 +19,9 @@ updates:
       # on 6.x until it ships support, otherwise lint and the vercel build both fail.
       - dependency-name: "typescript"
         versions: [">=7.0.0"]
+      # node types track the runtime major pinned in .nvmrc and engines, not the newest node
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
