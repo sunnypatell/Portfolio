@@ -11,7 +11,7 @@ repository-code: "https://github.com/sunnypatell/Portfolio"
 url: "https://www.sunnypatel.net"
 abstract: >-
   Source for Sunny Patel's personal portfolio: a Next.js 16 / React 19
-  application with an interactive 3D hero, a server-side contact pipeline, and
+  application with an interactive 3D hero, a single typed content source, and
   content covering his software engineering work and projects.
 keywords:
   - portfolio

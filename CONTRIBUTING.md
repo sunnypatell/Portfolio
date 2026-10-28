@@ -24,9 +24,10 @@ cp .env.example .env.local   # optional, see the file for what each value does
 npm run dev
 ```
 
-Before opening a PR, make sure both of these pass:
+Before opening a PR, make sure these pass:
 
 ```bash
 npm run lint
+npm run typecheck
 npm run build
 ```
