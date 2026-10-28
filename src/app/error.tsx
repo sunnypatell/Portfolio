@@ -4,32 +4,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect } from "react";
 import { Container, ctaClass } from "@/components/ui/primitives";
+import { reloadOnStaleChunk } from "@/lib/chunk-reload";
 
-const RETRY_KEY = "chunk-reload-at";
-
-// stale chunks (an open tab during a new deploy, a flaky network) throw ChunkLoadError;
-// one silent reload pulls the fresh build. the timestamp guard stops a reload loop.
-function isChunkError(e: Error) {
-  return /ChunkLoadError|Loading chunk|Failed to load chunk|importing a module script failed|dynamically imported module/i.test(
-    `${e?.name} ${e?.message}`
-  );
-}
-
-export default function Error({
+export default function ErrorPage({
   error,
-  reset,
+  retry,
 }: {
-  error: Error;
-  reset: () => void;
+  error: unknown;
+  retry: () => void;
 }) {
-  useEffect(() => {
-    if (!isChunkError(error)) return;
-    const last = Number(sessionStorage.getItem(RETRY_KEY) || 0);
-    if (Date.now() - last > 10000) {
-      sessionStorage.setItem(RETRY_KEY, String(Date.now()));
-      window.location.reload();
-    }
-  }, [error]);
+  useEffect(() => reloadOnStaleChunk(error), [error]);
 
   return (
     <div className="flex min-h-dvh items-center pt-32 pb-24">
@@ -45,7 +29,7 @@ export default function Error({
               in the footer always works.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <button type="button" onClick={reset} className={ctaClass}>
+              <button type="button" onClick={() => retry()} className={ctaClass}>
                 Try again
               </button>
               <Link

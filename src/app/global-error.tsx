@@ -1,31 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
-
-const RETRY_KEY = "chunk-reload-at";
-
-function isChunkError(e: Error) {
-  return /ChunkLoadError|Loading chunk|Failed to load chunk|importing a module script failed|dynamically imported module/i.test(
-    `${e?.name} ${e?.message}`
-  );
-}
+import { reloadOnStaleChunk } from "@/lib/chunk-reload";
 
 // global-error replaces the root layout, so styles are inline (no tailwind/css).
 export default function GlobalError({
   error,
-  reset,
+  retry,
 }: {
-  error: Error;
-  reset: () => void;
+  error: unknown;
+  retry: () => void;
 }) {
-  useEffect(() => {
-    if (!isChunkError(error)) return;
-    const last = Number(sessionStorage.getItem(RETRY_KEY) || 0);
-    if (Date.now() - last > 10000) {
-      sessionStorage.setItem(RETRY_KEY, String(Date.now()));
-      window.location.reload();
-    }
-  }, [error]);
+  useEffect(() => reloadOnStaleChunk(error), [error]);
 
   return (
     <html lang="en">
@@ -64,7 +50,7 @@ export default function GlobalError({
           </p>
           <button
             type="button"
-            onClick={reset}
+            onClick={() => retry()}
             style={{
               marginTop: 24,
               border: "1px solid rgba(217,102,61,0.5)",
