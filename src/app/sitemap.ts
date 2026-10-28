@@ -1,11 +1,7 @@
 import type { MetadataRoute } from "next";
-import { projects } from "@/content/site";
-
-const base = "https://www.sunnypatel.net";
+import { projects, siteUrl } from "@/content/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-
   const staticRoutes: {
     path: string;
     priority: number;
@@ -27,8 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   return [...staticRoutes, ...projectRoutes].map((r) => ({
-    url: `${base}${r.path}`,
-    lastModified: now,
+    url: `${siteUrl}${r.path}`,
     changeFrequency: r.freq,
     priority: r.priority,
   }));

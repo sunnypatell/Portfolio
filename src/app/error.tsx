@@ -63,7 +63,7 @@ export default function Error({
               aria-hidden
               width={697}
               height={587}
-              priority
+              preload
               className="float-bob h-auto w-52 select-none drop-shadow-[0_14px_34px_rgba(0,0,0,0.5)] sm:w-64"
             />
           </div>

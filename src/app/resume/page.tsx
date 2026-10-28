@@ -64,7 +64,7 @@ export default function ResumePage() {
                 height={1848}
                 sizes="(max-width: 880px) 100vw, 840px"
                 className="w-full"
-                priority={i === 0}
+                preload={i === 0}
               />
             </div>
           ))}

@@ -7,7 +7,7 @@ import { RevealText } from "@/components/motion/reveal-text";
 import { Reveal } from "@/components/ui/reveal";
 import { GithubIcon, OrcidIcon } from "@/components/ui/icons";
 import { CopyButton } from "@/components/ui/copy-button";
-import { research } from "@/content/site";
+import { ogImage, research } from "@/content/site";
 
 export const metadata: Metadata = {
   title: research.title,
@@ -20,19 +20,12 @@ export const metadata: Metadata = {
     description:
       "An independent, DOI-published research paper on the reliability of semantic caches for large language models.",
     url: "/research",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 2560,
-        height: 1280,
-        alt: "Sunny Patel, I build the whole stack, from the screen to the silicon",
-      },
-    ],
+    images: [ogImage],
   },
   twitter: {
     card: "summary_large_image",
     title: `${research.title} · Sunny Patel`,
-    images: ["/og-image.png"],
+    images: [ogImage.url],
   },
 };
 
@@ -99,7 +92,7 @@ export default function ResearchPage() {
                 height={540}
                 sizes="(max-width: 1024px) 100vw, 56rem"
                 className="w-full"
-                priority
+                preload
               />
             </div>
             <figcaption className="border-t border-black/10 px-6 py-3 font-mono text-[0.7rem] leading-relaxed text-black/55 sm:px-8">
@@ -175,7 +168,7 @@ export default function ResearchPage() {
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-1.5 text-ember transition-colors hover:text-ember-bright"
             >
-              DOI: 10.5281/zenodo.20532711
+              DOI: {research.doiLabel}
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
             <a

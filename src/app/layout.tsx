@@ -5,7 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Providers } from "@/components/providers";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
-import { profile } from "@/content/site";
+import { ogImage, profile, siteUrl } from "@/content/site";
 import "./globals.css";
 
 // geist for display + mono, hanken for body warmth
@@ -27,7 +27,6 @@ const body = Hanken_Grotesk({
   display: "swap",
 });
 
-const siteUrl = "https://www.sunnypatel.net";
 const description =
   "Sunny Patel is a software developer who works the whole stack, from real-time web apps to the systems and infrastructure underneath. Honours CS at Ontario Tech.";
 
@@ -61,21 +60,14 @@ export const metadata: Metadata = {
     description:
       "A developer across the whole stack, from real-time web to the infrastructure underneath.",
     siteName: "Sunny Patel",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 2560,
-        height: 1280,
-        alt: "Sunny Patel, I build the whole stack, from the screen to the silicon",
-      },
-    ],
+    images: [ogImage],
   },
   twitter: {
     card: "summary_large_image",
     title: "Sunny Patel · Software Developer",
     description:
       "A developer across the whole stack, from real-time web to the infrastructure underneath.",
-    images: ["/og-image.png"],
+    images: [ogImage.url],
   },
 };
 
@@ -134,7 +126,9 @@ export default function RootLayout({
         </a>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+          }}
         />
         <Providers>
           <Nav />

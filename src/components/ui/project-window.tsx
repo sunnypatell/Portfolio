@@ -8,7 +8,7 @@ export function ProjectWindow({
   alt,
   url,
   className,
-  priority,
+  preload,
   glow,
   objectPosition = "object-top",
 }: {
@@ -16,7 +16,7 @@ export function ProjectWindow({
   alt: string;
   url?: string;
   className?: string;
-  priority?: boolean;
+  preload?: boolean;
   glow?: boolean;
   objectPosition?: string;
 }) {
@@ -47,7 +47,7 @@ export function ProjectWindow({
             alt={alt}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
-            priority={priority}
+            preload={preload}
             className={cn(
               "object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]",
               objectPosition
