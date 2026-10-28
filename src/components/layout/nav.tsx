@@ -6,6 +6,7 @@ import { Search } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useLenis } from "lenis/react";
 import { cn } from "@/lib/utils";
+import { useScrollBlock } from "@/lib/hooks";
 import { navLinks, profile } from "@/content/site";
 import { Magnetic } from "@/components/motion/magnetic";
 
@@ -15,6 +16,7 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [mac, setMac] = useState(true);
+  const headerRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
 
@@ -45,15 +47,13 @@ export function Nav() {
   }, [open]);
 
   // lock background scroll (lenis + native) while the menu is open, move focus in
+  useScrollBlock(headerRef, open);
   useEffect(() => {
     if (!open) return;
     lenis?.stop();
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     const id = window.setTimeout(() => firstLinkRef.current?.focus(), 60);
     return () => {
       lenis?.start();
-      document.body.style.overflow = prev;
       window.clearTimeout(id);
     };
   }, [open, lenis]);
@@ -63,6 +63,7 @@ export function Nav() {
 
   return (
     <header
+      ref={headerRef}
       className={cn(
         "fixed inset-x-0 top-0 z-40 transition-colors duration-500",
         scrolled || open
