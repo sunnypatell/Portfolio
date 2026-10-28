@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import emailjs from "@emailjs/browser";
 import confetti from "canvas-confetti";
 import { ArrowRight } from "lucide-react";
 import { ctaClass } from "@/components/ui/primitives";
+import { profile } from "@/content/site";
 
-const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
 const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
 const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
@@ -18,15 +18,6 @@ const field =
   "w-full rounded-md border border-field bg-surface px-4 py-3 text-bone placeholder:text-muted outline-none transition-colors focus:border-ember aria-[invalid=true]:border-ember";
 const label = "font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted";
 const errCls = "mt-1.5 block font-mono text-[0.7rem] text-ember";
-
-declare global {
-  interface Window {
-    grecaptcha?: {
-      ready: (cb: () => void) => void;
-      execute: (key: string, opts: { action: string }) => Promise<string>;
-    };
-  }
-}
 
 function validate(d: Record<string, string>): Errors {
   const e: Errors = {};
@@ -53,24 +44,6 @@ export function ContactForm() {
   const [serverError, setServerError] = useState("");
   const [errors, setErrors] = useState<Errors>({});
 
-  useEffect(() => {
-    if (!SITE_KEY || document.getElementById("recaptcha-v3")) return;
-    const s = document.createElement("script");
-    s.id = "recaptcha-v3";
-    s.src = `https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`;
-    s.async = true;
-    document.head.appendChild(s);
-  }, []);
-
-  async function getToken(): Promise<string> {
-    if (!SITE_KEY || !window.grecaptcha) return "";
-    return new Promise((resolve) =>
-      window.grecaptcha!.ready(() =>
-        window.grecaptcha!.execute(SITE_KEY, { action: "contact" }).then(resolve)
-      )
-    );
-  }
-
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
@@ -94,14 +67,13 @@ export function ContactForm() {
 
     if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
       setStatus("error");
-      setServerError("Email isn't wired up yet. Reach me at sunnypatel124555@gmail.com.");
+      setServerError(`Email isn't wired up yet. Reach me at ${profile.email}.`);
       return;
     }
 
     setStatus("sending");
     setServerError("");
     try {
-      const token = await getToken();
       // superset of common template var names so it maps to any emailjs template
       await emailjs.send(
         SERVICE_ID,
@@ -111,12 +83,11 @@ export function ContactForm() {
           from_name: data.name,
           to_name: "Sunny Patel",
           email: data.email,
-          from_email: data.email, // the var the actual template reads; without it the email came through empty
+          from_email: data.email, // the var the template actually reads
           reply_to: data.email,
           user_email: data.email,
-          to_email: "sunnypatel124555@gmail.com",
+          to_email: profile.email,
           message: data.message,
-          "g-recaptcha-response": token,
         },
         { publicKey: PUBLIC_KEY }
       );
@@ -231,10 +202,6 @@ export function ContactForm() {
           )}
         </p>
       </div>
-
-      {SITE_KEY && (
-        <p className="font-mono text-[0.65rem] text-muted">Protected by reCAPTCHA.</p>
-      )}
     </form>
   );
 }
