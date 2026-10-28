@@ -39,7 +39,7 @@ export default function NotFound() {
             width={300}
             height={300}
             className="mx-auto w-40 select-none sm:w-full sm:max-w-[280px]"
-            priority
+            preload
           />
         </div>
       </Container>

@@ -30,7 +30,7 @@ export default function AboutPage() {
                   src="/assets/portrait.jpg"
                   alt="Sunny Patel"
                   fill
-                  priority
+                  preload
                   quality={90}
                   sizes="420px" // square source covers a taller 4:5 box, so request near full-res, not the 320px slot width
                   className="object-cover object-center"

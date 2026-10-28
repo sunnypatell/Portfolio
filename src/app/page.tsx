@@ -7,17 +7,13 @@ import { ProjectWindow } from "@/components/ui/project-window";
 import { ActivePill } from "@/components/ui/project-signals";
 import { Magnetic } from "@/components/motion/magnetic";
 import {
-  projects,
   capabilities,
   experiences,
+  featuredProjects,
   WEB_PROJECTS,
-  FEATURED_ORDER,
 } from "@/content/site";
 
 export default function Home() {
-  const featured = projects
-    .filter((p) => p.featured)
-    .sort((a, b) => FEATURED_ORDER.indexOf(a.slug) - FEATURED_ORDER.indexOf(b.slug));
   return (
     <>
       <Hero />
@@ -41,13 +37,14 @@ export default function Home() {
           </div>
 
           <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((p, i) => (
+            {featuredProjects.map((p, i) => (
               <Reveal key={p.slug} delay={i * 0.08}>
                 <Link href={`/projects/${p.slug}`} className="group block">
                   <ProjectWindow
                     src={p.image}
                     alt={`${p.name} screenshot`}
                     url={WEB_PROJECTS.includes(p.slug) ? p.links.live : undefined}
+                    objectPosition={p.imagePosition}
                   />
                   <div className="mt-5 flex items-baseline justify-between gap-4">
                     <h3 className="font-display text-xl font-semibold text-bone transition-colors group-hover:text-ember">

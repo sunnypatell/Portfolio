@@ -1,27 +1,30 @@
 // single source of truth. copy is researched against the real repos + live sites
 // and fact-checked: portfolio voice, irrejectable, 100% true. no em dashes.
 
+export const siteUrl = "https://www.sunnypatel.net";
+
+// the one social card every route shares
+export const ogImage = {
+  url: "/og-image.png",
+  width: 2560,
+  height: 1280,
+  alt: "Sunny Patel, I build the whole stack, from the screen to the silicon",
+};
+
 export const profile = {
   name: "Sunny Patel",
   role: "Software Developer",
   location: "Greater Toronto Area, Canada",
   email: "sunnypatel124555@gmail.com",
-  phoneDisplay: "(437) 216-1611",
-  phoneHref: "+14372161611",
   resume: "/resume",
   resumeFile: "/Sunny-Patel-Resume.pdf",
   socials: {
     github: "https://github.com/sunnypatell",
     linkedin: "https://www.linkedin.com/in/sunny-patel-30b460204/",
-    website: "https://www.sunnypatel.net/",
   },
   status: {
-    label: "Software Developer Intern",
-    org: "IBM",
-    note: "watsonx Workshop",
     available: "Open to software roles",
   },
-  headline: ["I build the whole stack,", "from the screen to the silicon."],
   intro:
     "I build full-stack software **people actually use**, and I understand it **the whole way down**, to the systems most apps just sit on top of. Give me the hardest problem in your stack, the one that has to hold, and I'll **own it end to end**.",
 } as const;
@@ -138,6 +141,7 @@ export type Project = {
   stack: string[];
   links: { live?: string; repo?: string; docs?: string };
   image: string;
+  imagePosition?: string; // tailwind object-position class for shots that aren't top-anchored
   featured: boolean;
   year: string;
   team?: string; // shown when the build was genuinely shared. solo projects omit it.
@@ -415,6 +419,7 @@ After the original single-file build, the game was refactored into eight documen
     stack: ["Java SE", "Swing / AWT", "Graphics2D", "javax.sound.sampled", "Javadoc"],
     links: { repo: "https://github.com/sunnypatell/KnifeThrow" },
     image: "/assets/knifethrow.webp",
+    imagePosition: "object-center",
     featured: false,
     year: "2022",
   },
@@ -426,7 +431,11 @@ export const WEB_PROJECTS = ["ats-screener", "axelot", "netdash"];
 // display order for the featured projects on the home and projects pages.
 // basalt leads: it is the only one of these nobody else has built.
 // netdash sits in the second section now, so three stay up top.
-export const FEATURED_ORDER = ["basalt", "ats-screener", "sunnify" /*, "netdash" */];
+const FEATURED_ORDER = ["basalt", "ats-screener", "sunnify" /*, "netdash" */];
+
+export const featuredProjects = projects
+  .filter((p) => p.featured)
+  .sort((a, b) => FEATURED_ORDER.indexOf(a.slug) - FEATURED_ORDER.indexOf(b.slug));
 
 export const research = {
   title: "When Semantic Caches Lie",
@@ -448,6 +457,7 @@ export const research = {
   pdf: "/semantic-cache-reliability-sunny-patel.pdf",
   repo: "https://github.com/sunnypatell/semantic-cache-reliability",
   doi: "https://doi.org/10.5281/zenodo.20532711",
+  doiLabel: "10.5281/zenodo.20532711",
   orcid: "https://orcid.org/0009-0005-3863-7642",
   citation:
     "Patel, S. (2026). When Semantic Caches Lie: False Hits, Downstream Cost, and Calibration in Embedding-Based Caching for Large Language Models. https://doi.org/10.5281/zenodo.20532711",

@@ -11,7 +11,7 @@ import { RichText } from "@/components/ui/rich-text";
 import { ProjectSignals, ActivePill } from "@/components/ui/project-signals";
 import { GithubIcon, OrcidIcon } from "@/components/ui/icons";
 import { CopyButton } from "@/components/ui/copy-button";
-import { projects } from "@/content/site";
+import { ogImage, projects, WEB_PROJECTS } from "@/content/site";
 
 export const dynamicParams = false;
 
@@ -34,20 +34,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${p.name} · Sunny Patel`,
       description: p.oneLiner,
       url: `/projects/${p.slug}`,
-      images: [
-        {
-          url: "/og-image.png",
-          width: 2560,
-          height: 1280,
-          alt: "Sunny Patel, I build the whole stack, from the screen to the silicon",
-        },
-      ],
+      images: [ogImage],
     },
     twitter: {
       card: "summary_large_image",
       title: `${p.name} · Sunny Patel`,
       description: p.oneLiner,
-      images: ["/og-image.png"],
+      images: [ogImage.url],
     },
   };
 }
@@ -144,14 +137,10 @@ export default async function ProjectDetail({ params }: Props) {
               <ProjectWindow
                 src={p.image}
                 alt={`${p.name} screenshot`}
-                url={
-                  ["ats-screener", "axelot", "netdash"].includes(p.slug)
-                    ? p.links.live
-                    : undefined
-                }
-                objectPosition={p.slug === "knifethrow" ? "object-center" : undefined}
+                url={WEB_PROJECTS.includes(p.slug) ? p.links.live : undefined}
+                objectPosition={p.imagePosition}
                 glow
-                priority
+                preload
               />
             </Parallax>
           </Reveal>

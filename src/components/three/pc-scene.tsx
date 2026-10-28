@@ -11,11 +11,11 @@ import {
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import type { Group, Mesh } from "three";
 
-const URL = "/models/retro_computer.glb?v=5"; // swap this one path to use a different rig
+const MODEL_URL = "/models/retro_computer.glb?v=5"; // swap this one path to use a different rig
 
 function Model({ scale }: { scale: number }) {
   const ref = useRef<Group>(null);
-  const { scene } = useGLTF(URL);
+  const { scene } = useGLTF(MODEL_URL);
 
   // sketchfab ships every material as alphaMode BLEND (renders see-through); force opaque + depth write
   useMemo(() => {
@@ -48,7 +48,7 @@ function Model({ scale }: { scale: number }) {
     </Center>
   );
 }
-useGLTF.preload(URL);
+useGLTF.preload(MODEL_URL);
 
 // transparent canvas; warm key + cool rim grade it into the theme, bloom lifts the crt glow
 export default function PcScene({ active = true }: { active?: boolean }) {

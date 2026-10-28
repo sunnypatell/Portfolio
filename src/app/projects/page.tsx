@@ -9,7 +9,7 @@ import { ProjectWindow } from "@/components/ui/project-window";
 import { ProjectSignals, ActivePill } from "@/components/ui/project-signals";
 import { ResearchCard } from "@/components/home/research-card";
 import { GithubIcon } from "@/components/ui/icons";
-import { projects, WEB_PROJECTS, FEATURED_ORDER } from "@/content/site";
+import { featuredProjects, projects, WEB_PROJECTS } from "@/content/site";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -20,9 +20,6 @@ export const metadata: Metadata = {
 };
 
 export default function ProjectsPage() {
-  const featured = projects
-    .filter((p) => p.featured)
-    .sort((a, b) => FEATURED_ORDER.indexOf(a.slug) - FEATURED_ORDER.indexOf(b.slug));
   const rest = projects.filter((p) => !p.featured);
 
   return (
@@ -43,7 +40,7 @@ export default function ProjectsPage() {
       </Container>
 
       <Container className="mt-20 space-y-28 sm:space-y-36">
-        {featured.map((p, i) => (
+        {featuredProjects.map((p, i) => (
           <Reveal key={p.slug}>
             <article className="group grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
               <Parallax speed={0.95} className={cn(i % 2 === 1 && "lg:order-2")}>
@@ -56,6 +53,7 @@ export default function ProjectsPage() {
                     src={p.image}
                     alt={`${p.name} screenshot`}
                     url={WEB_PROJECTS.includes(p.slug) ? p.links.live : undefined}
+                    objectPosition={p.imagePosition}
                     glow
                   />
                 </Link>
@@ -164,7 +162,7 @@ export default function ProjectsPage() {
                   src={p.image}
                   alt={`${p.name} screenshot`}
                   url={WEB_PROJECTS.includes(p.slug) ? p.links.live : undefined}
-                  objectPosition={p.slug === "knifethrow" ? "object-center" : undefined}
+                  objectPosition={p.imagePosition}
                 />
                 <div className="mt-5 flex items-baseline justify-between gap-4">
                   <h3 className="font-display text-lg font-semibold text-bone transition-colors group-hover:text-ember">

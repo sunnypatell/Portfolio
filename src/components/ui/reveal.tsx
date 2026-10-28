@@ -7,7 +7,6 @@ type RevealProps = {
   className?: string;
   delay?: number;
   y?: number;
-  as?: "div" | "span" | "li";
 };
 
 // shared scroll-reveal. motionconfig reducedMotion="user" neutralises the
