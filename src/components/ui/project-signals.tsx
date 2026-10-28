@@ -45,7 +45,7 @@ export function ProjectSignals({
       {badges?.map((b) => (
         <a key={b.alt} href={b.href} target="_blank" rel="noopener noreferrer" className="inline-flex">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={b.src} alt={b.alt} className="h-[1.35rem]" />
+          <img src={b.src} alt={b.alt} loading="lazy" className="h-[1.35rem]" />
         </a>
       ))}
     </div>
