@@ -34,7 +34,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
+      # strict here, not in .npmrc: dependabot obeys .npmrc and its node major moves without notice
       - run: npm ci
+        env:
+          npm_config_engine_strict: "true"
 
       - name: Typecheck
         run: npm run typecheck
