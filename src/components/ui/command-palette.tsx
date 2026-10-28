@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useScrollBlock } from "@/lib/hooks";
 import { profile, projects, research } from "@/content/site";
 
 type Cmd = {
@@ -20,12 +21,14 @@ export function CommandPalette() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const restoreRef = useRef<HTMLElement | null>(null);
 
   const close = useCallback(() => {
     setOpen(false);
     setQuery("");
+    setActive(0);
     restoreRef.current?.focus?.();
   }, []);
 
@@ -96,8 +99,6 @@ export function CommandPalette() {
     );
   }, [commands, query]);
 
-  useEffect(() => setActive(0), [query]);
-
   // open shortcut + nav trigger
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -120,15 +121,11 @@ export function CommandPalette() {
   }, []);
 
   // lock scroll + focus the input while open
+  useScrollBlock(overlayRef, open);
   useEffect(() => {
     if (!open) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     const id = window.setTimeout(() => inputRef.current?.focus(), 20);
-    return () => {
-      document.body.style.overflow = prev;
-      window.clearTimeout(id);
-    };
+    return () => window.clearTimeout(id);
   }, [open]);
 
   // keep the active option in view
@@ -144,6 +141,8 @@ export function CommandPalette() {
     if (e.key === "Escape") {
       e.preventDefault();
       close();
+    } else if (e.key === "Tab") {
+      e.preventDefault(); // the input is the dialog's only tab stop; options move via the arrows
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
       setActive((a) => Math.min(a + 1, filtered.length - 1));
@@ -158,6 +157,7 @@ export function CommandPalette() {
 
   return (
     <div
+      ref={overlayRef}
       role="presentation"
       data-lenis-prevent
       className="fixed inset-0 z-[60] flex items-start justify-center p-4 pt-[16vh]"
@@ -180,7 +180,10 @@ export function CommandPalette() {
           <input
             ref={inputRef}
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setActive(0);
+            }}
             onKeyDown={onKeyDown}
             role="combobox"
             aria-expanded="true"
@@ -192,7 +195,13 @@ export function CommandPalette() {
           />
         </div>
 
-        <div id="cmdk-list" role="listbox" aria-label="Commands" className="max-h-[50vh] overflow-y-auto p-2">
+        <div
+          id="cmdk-list"
+          role="listbox"
+          aria-label="Commands"
+          data-overlay-scroll
+          className="max-h-[50vh] overflow-y-auto overscroll-contain p-2"
+        >
           {filtered.length === 0 && (
             <div className="px-3 py-6 text-center font-mono text-xs text-muted">
               No matches.
@@ -212,6 +221,7 @@ export function CommandPalette() {
                   type="button"
                   id={`cmdk-${c.id}`}
                   role="option"
+                  tabIndex={-1}
                   aria-selected={isActive}
                   onMouseMove={() => setActive(i)}
                   onClick={() => c.run()}
