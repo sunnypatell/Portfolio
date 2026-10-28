@@ -1,8 +1,8 @@
 # Security Policy
 
 This repository powers a personal portfolio site. There is no user data store
-and no authentication, but the contact form does hit a server-side API route, so
-security reports are welcome.
+and no authentication, but the contact form sends mail through EmailJS from the
+browser, so security reports are welcome.
 
 ## Reporting a vulnerability
 
@@ -21,8 +21,8 @@ testing.
 
 ## Scope
 
-In scope: this repository's code, the contact API route, and the deployed site
-at https://www.sunnypatel.net.
+In scope: this repository's code, the contact form, and the deployed site at
+https://www.sunnypatel.net.
 
 Out of scope: third-party services the site links to or embeds (GitHub, Vercel,
-Firebase, Resend, Google reCAPTCHA), which run their own disclosure programs.
+Firebase, EmailJS), which run their own disclosure programs.

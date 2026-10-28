@@ -5,6 +5,7 @@
 ## Checklist
 
 - [ ] `npm run lint` passes
+- [ ] `npm run typecheck` passes
 - [ ] `npm run build` passes
 - [ ] verified in the browser (desktop and mobile)
 - [ ] no new accessibility or reduced-motion regressions
