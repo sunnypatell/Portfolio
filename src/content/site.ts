@@ -84,9 +84,14 @@ export const experiences: Experience[] = [
     start: "Jan 2026",
     end: "Present",
     current: true,
-    summary: "Full-stack engineering on watsonx Workshop at IBM.",
+    summary:
+      "Building IBM's global AI sales enablement platform, watsonx Workshop, end to end since pre-launch, as it scaled 20x.",
     bullets: [
-      "Building full-stack features on watsonx Workshop, across the interface and the services behind it.",
+      "Rose to a top-3 contributor among ~30 engineers, shipping across every layer of the stack and most product features.",
+      "Launched 6+ AI agents for pricing, meeting prep, and IBM's Think 2026 conference, the first shipped in 9 days to 31,000+ sellers.",
+      "Connected ~500 AI agents to live Salesforce data, IBM product docs, and partner pricing.",
+      "Administered the platform from dev to production, with zero-downtime migrations and 33 vulnerabilities fixed.",
+      "Turned asks from sales leaders and marketing into shipped AI tools, and served as first-line support for sellers.",
     ],
   },
   {
