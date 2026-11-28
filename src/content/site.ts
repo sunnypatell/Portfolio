@@ -261,7 +261,7 @@ Auth and storage adapt to where it runs: Firebase and Firestore for the hosted b
     year: "2026",
     active: true,
     metrics: [
-      { value: "2,000+", label: "users served", href: "https://ats-screener.vercel.app", live: true },
+      { value: "4,000+", label: "users served", href: "https://ats-screener.vercel.app", live: true },
       { value: "6", label: "real ATS engines" },
     ],
   },

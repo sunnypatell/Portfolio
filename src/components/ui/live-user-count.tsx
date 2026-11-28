@@ -9,7 +9,7 @@ const COUNTER_URL = KEY
   ? `https://firestore.googleapis.com/v1/projects/ats-screener-app/databases/default/documents/stats/public?key=${KEY}`
   : null;
 
-export function LiveUserCount({ fallback = "2,000+" }: { fallback?: string }) {
+export function LiveUserCount({ fallback }: { fallback: string }) {
   const pathname = usePathname();
   const ref = useRef<HTMLSpanElement>(null);
   const [target, setTarget] = useState<number | null>(null);

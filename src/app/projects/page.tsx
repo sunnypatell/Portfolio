@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Projects Sunny Patel has built and shipped end to end: a GPU verification tool published with a DOI, a resume screener 2,000+ people use, open-source developer tools, security work, and an independent research paper.",
+    "Projects Sunny Patel has built and shipped end to end: a GPU verification tool published with a DOI, a resume screener thousands of people use, open-source developer tools, security work, and an independent research paper.",
   alternates: { canonical: "/projects" },
 };
 
